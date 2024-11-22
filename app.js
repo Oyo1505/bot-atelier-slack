@@ -24,6 +24,21 @@ app.command('/hello', async ({ command, ack, say }) => {
 	await say(`Hello, <@${command.user_id}>`);
 });
 
+app.command('/mess', async ({ command, ack, client }) => {
+  await ack(); // Acquitte la commande
+  try {
+    const userId = command.user_id; // Récupère l'ID de l'utilisateur qui a tapé la commande
+    const result = await client.chat.postMessage({
+      token: process.env.BOT_USER_OAUTH_TOKEN,
+      channel: userId, // Envoie un DM à cet utilisateur
+      text: `Salut <@${userId}>! Voici un message privé depuis ton bot 🚀`,
+    });
+    console.log('Message envoyé :', result);
+  } catch (error) {
+    console.error('Erreur lors de l\'envoi du message :', error);
+  }
+});
+
 (async () => {
   // Start your app
   await app.start();
