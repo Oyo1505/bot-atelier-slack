@@ -8,10 +8,6 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
 # production
 /build
 
@@ -30,34 +26,6 @@ yarn-error.log*
 .env*
 !.env.example
 
-# vercel
-.vercel
-
-# video
-/videos
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# next-video
-videos/*
-!videos/*.json
-!videos/*.js
-!videos/*.ts
-public/_next-video
-
-# next-video
-videos/*
-!videos/*.json
-!videos/*.js
-!videos/*.ts
-public/_next-video
-
-# next-video
-y/*
-!y/*.json
-!y/*.js
-!y/*.ts
-public/_next-video
-.env*.local
