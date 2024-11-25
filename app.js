@@ -1,6 +1,11 @@
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 dotenv.config();
-const { App } = require('@slack/bolt');
+import pkg from '@slack/bolt';
+const { App } = pkg;
+import cron from 'node-cron';
+import { randomQuestion } from './utils/random-question/random-question.js';
+
+const SCHEDULE_WEEKLY = '0 21 14 * * 1'
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
@@ -8,10 +13,11 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   socketMode: true,
   appToken: process.env.SLACK_APP_TOKEN,
+  stateSecret: process.env.SLACK_STATE_SECRET,
+  scopes: ["channels:history", "chat:write", "commands"],
   port: process.env.PORT || 3000,
 });
 
-// Listens to incoming messages that contain "hello"
 app.message('hello', async ({ message, say }) => {
   console.log(`Received a direct message from user ${message.user}`);
   // say() sends a message to the channel where the event was triggered
@@ -24,23 +30,25 @@ app.command('/hello', async ({ command, ack, say }) => {
 	await say(`Hello, <@${command.user_id}>`);
 });
 
-app.command('/mess', async ({ command, ack, client }) => {
-  await ack(); // Acquitte la commande
-  try {
-    const userId = command.user_id; // Récupère l'ID de l'utilisateur qui a tapé la commande
-    const result = await client.chat.postMessage({
-      token: process.env.BOT_USER_OAUTH_TOKEN,
-      channel: userId, // Envoie un DM à cet utilisateur
-      text: `Salut <@${userId}>! Voici un message privé depuis ton bot 🚀`,
+cron.schedule(SCHEDULE_WEEKLY, () => {
+
+  app.client.users.list().then(res => {
+    res.members.forEach(member => {
+      if (member.real_name === 'Henri-Pierre Rigoulet' && member.is_bot === false && member.is_email_confirmed === true && member.deleted === false) {
+        app.client.chat.postMessage({
+          channel: member.id,
+          text: `Salut <@${member.id}>! ${randomQuestion()}?`,
+        });
+      }
     });
-    console.log('Message envoyé :', result);
-  } catch (error) {
-    console.error('Erreur lors de l\'envoi du message :', error);
-  }
+  }).then(() => {
+    console.log('Messages envoyés');
+  }).catch(err => {
+    console.error("Erreur lors de l'envoi du message :", err);
+  });
 });
 
 (async () => {
-  // Start your app
   await app.start();
   console.log('⚡️ Bolt app is running!',process.env.PORT || 3000 );
 })();
