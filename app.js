@@ -13,8 +13,6 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   socketMode: true,
   appToken: process.env.SLACK_APP_TOKEN,
-  stateSecret: process.env.SLACK_STATE_SECRET,
-  scopes: ["channels:history", "chat:write", "commands"],
   port: process.env.PORT || 3000,
 });
 
