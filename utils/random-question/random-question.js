@@ -1,5 +1,5 @@
 
-const questions = [
+ const questions = [
   {
     question : 'Comment te sens-tu après cette semaine ? (1 à 5)',
     blocks : [
@@ -17,10 +17,10 @@ const questions = [
             type: 'button',
             text: {
               type: 'plain_text',
-              text: '1 : Ca va pas du tout'
+              text: '1 : Ça va pas du tout 😔'
             },
             value: 'reponse_1',
-            action_id: 'reponse_1_action'
+            action_id: 'reponse_1_q_1'
           },
           {
             type: 'button',
@@ -29,7 +29,7 @@ const questions = [
               text: '2 : Pas ouf'
             },
             value: 'reponse_2',
-            action_id: 'reponse_2_action'
+            action_id: 'reponse_2_q_1'
           },
           {
             type: 'button',
@@ -38,7 +38,7 @@ const questions = [
               text: '3 : Plutot ok.'
             },
             value: 'reponse_3',
-            action_id: 'reponse_3_action'
+            action_id: 'reponse_3_q_1'
           },
           {
             type: 'button',
@@ -47,7 +47,7 @@ const questions = [
               text: '4 : Bonne semaine.'
             },
             value: 'reponse_4',
-            action_id: 'reponse_4_action'
+            action_id: 'reponse_4_q_1'
           },    {
             type: 'button',
             text: {
@@ -55,7 +55,7 @@ const questions = [
               text: '5 : Excellente semaine.'
             },
             value: 'reponse_5',
-            action_id: 'reponse_5_action'
+            action_id: 'reponse_5_q_1'
           }
 
         ]
@@ -82,7 +82,7 @@ const questions = [
               text: 'J’ai terminé un projet ! 🎉'
             },
             value: 'reponse_1',
-            action_id: 'reponse_1_action'
+            action_id: 'reponse_1_q_2'
           },
           {
             type: 'button',
@@ -91,7 +91,7 @@ const questions = [
               text: 'J’ai appris quelque chose de nouveau ! 📚'
             },
             value: 'reponse_2',
-            action_id: 'reponse_2_action'
+            action_id: 'reponse_2_q_2'
           },
           {
             type: 'button',
@@ -100,7 +100,7 @@ const questions = [
               text: 'J’ai aidé un collègue ! 🤝'
             },
             value: 'reponse_3',
-            action_id: 'reponse_3_action'
+            action_id: 'reponse_3_q_2'
           }
         ]
       }
@@ -123,121 +123,51 @@ const questions = [
             type: 'button',
             text: {
               type: 'plain_text',
-              text: 'J’ai terminé un projet ! 🎉'
+              text: 'Un défi technique 🛠️'
             },
             value: 'reponse_1',
-            action_id: 'reponse_1_action'
+            action_id: 'reponse_1_q_3'
           },
           {
             type: 'button',
             text: {
               type: 'plain_text',
-              text: 'J’ai appris quelque chose de nouveau ! 📚'
+              text: 'Une gestion de temps ⏳'
             },
             value: 'reponse_2',
-            action_id: 'reponse_2_action'
+            action_id: 'reponse_2_q_3'
           },
           {
             type: 'button',
             text: {
               type: 'plain_text',
-              text: 'J’ai aidé un collègue ! 🤝'
+              text: 'Une communication interne 🤝'
             },
             value: 'reponse_3',
-            action_id: 'reponse_3_action'
+            action_id: 'reponse_3_q_3'
+          },
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Une prise de décision difficile 🤔'
+            },
+            value: 'reponse_4',
+            action_id: 'reponse_4_q_3'
+          },
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Un apprentissage ou adaptation 📚'
+            },
+            value: 'reponse_5',
+            action_id: 'reponse_5_q_3'
           }
         ]
       }
     ],
   },
-  {
-    question : 'Que pourrais-tu améliorer la semaine prochaine ?',
-    blocks : [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: 'Que pourrais-tu améliorer la semaine prochaine ?',
-        }
-      },
-      {
-        type: 'actions',
-        elements: [
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              text: 'J’ai terminé un projet ! 🎉'
-            },
-            value: 'reponse_1',
-            action_id: 'reponse_1_action'
-          },
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              text: 'J’ai appris quelque chose de nouveau ! 📚'
-            },
-            value: 'reponse_2',
-            action_id: 'reponse_2_action'
-          },
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              text: 'J’ai aidé un collègue ! 🤝'
-            },
-            value: 'reponse_3',
-            action_id: 'reponse_3_action'
-          }
-        ]
-      }
-    ],
-  },
-  {
-    question : 'De 1 à 5, comment évalues-tu ton énergie cette semaine ?',
-    blocks : [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: 'De 1 à 5, comment évalues-tu ton énergie cette semaine ?',
-        }
-      },
-      {
-        type: 'actions',
-        elements: [
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              text: 'J’ai terminé un projet ! 🎉'
-            },
-            value: 'reponse_1',
-            action_id: 'reponse_1_action'
-          },
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              text: 'J’ai appris quelque chose de nouveau ! 📚'
-            },
-            value: 'reponse_2',
-            action_id: 'reponse_2_action'
-          },
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              text: 'J’ai aidé un collègue ! 🤝'
-            },
-            value: 'reponse_3',
-            action_id: 'reponse_3_action'
-          }
-        ]
-      }
-    ],
-  }
 ];
 
  const randomQuestion = () => {
@@ -246,4 +176,4 @@ const questions = [
   return questions[randomIndex];
 };
 
-export { randomQuestion };
+export { randomQuestion, questions };

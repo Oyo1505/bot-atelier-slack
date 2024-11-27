@@ -17,5 +17,17 @@ export async function appendToGoogleSheets({userId,userName, answerText, answerI
     },
   };
    await sheets.spreadsheets.values.append(request);
+   // Ajouter des formules pour les statistiques
+  const formulas = [
+    { range: 'F2', values: [['=COUNTUNIQUE(A2:A)']] }, 
+    //{ range: 'F4', values: [['=AVERAGEIF(C:C, 1, C:C)']] }, 
+  ];
 
+  await sheets.spreadsheets.values.batchUpdate({
+    spreadsheetId: sheetId,
+    resource: {
+      data: formulas,
+      valueInputOption: 'USER_ENTERED',
+    },
+  });
 }
