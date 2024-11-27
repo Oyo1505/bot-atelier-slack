@@ -6,9 +6,10 @@ export const checkIfUserIsInSheet = async ({userId, sheetId, blockId}) => {
   const sheets = google.sheets({ version: 'v4', auth });
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: RANGE_GOOGLE_SHEET,
+    range: 'A:E',
   });
   const values = response.data.values;
   if(!values) return false
-  return values[0].includes(userId && blockId);
+
+  return values.some(value => value.includes(userId && blockId) === true);
 };

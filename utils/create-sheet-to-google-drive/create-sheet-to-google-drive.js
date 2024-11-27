@@ -16,8 +16,21 @@ export async function createSheetToGooleDrive() {
         },
       },
     });
-
+    
     const spreadsheetId = sheetData.spreadsheetId;
+    // Ajouter les titres des colonnes
+    const request = {
+      spreadsheetId: spreadsheetId,
+      range: 'A1', // Ligne 1 pour les en-têtes
+      valueInputOption: 'RAW',
+      resource: {
+        values: [
+          ['UserId', 'UserName', 'AnswerId', 'AnswerText', 'BlockId', 'TotalUsers'],
+        ],
+      },
+    };
+
+    await sheets.spreadsheets.values.update(request);
 
     // Étape 2 : Modifier les permissions pour rendre la feuille publique
     await drive.permissions.create({
