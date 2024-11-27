@@ -5,26 +5,25 @@ import { actionFromBlockButton } from '../../actions/action-from-block-button.js
 import { createSheetToGooleDrive } from '../create-sheet-to-google-drive/create-sheet-to-google-drive.js';
 
 const SECONDES = 0;
-const MINUTES = 48;
-const HOURS = 16;
+const MINUTES = 3;
+const HOURS = 11;
 const DAYS_OF_MONTH = '*';
 const MONTHS = '*';
 const DAYS_OF_WEEK = '*';
 
 
-const SCHEDULE_WEEKLY = `${SECONDES} ${MINUTES} ${HOURS} ${DAYS_OF_MONTH} ${MONTHS} ${DAYS_OF_WEEK}`;
+const SCHEDULE_TIME = `${SECONDES} ${MINUTES} ${HOURS} ${DAYS_OF_MONTH} ${MONTHS} ${DAYS_OF_WEEK}`;
 
 export const scheduleMessageToUsers = async () => {
   const question = randomQuestion().question;
   const blocks = randomQuestion().blocks;
   const elementsBlocks = blocks[1].elements;
 
-  cron.schedule(SCHEDULE_WEEKLY, () => {
+  cron.schedule(SCHEDULE_TIME, () => {
 
     app.client.users.list().then(async res => {
-
-      const sheetId = await createSheetToGooleDrive();
-
+    const sheetId = await createSheetToGooleDrive();
+      console.log(sheetId)
       if(sheetId !== null){
         res.members.forEach( async (member) => {
           if (member.real_name === 'Henri-Pierre Rigoulet' && member.is_bot === false && member.is_email_confirmed === true && member.deleted === false) {
