@@ -7,7 +7,6 @@ export const getSheetFromGoogleDrive = async (id) =>{
     const response = await sheets.spreadsheets.get({
         spreadsheetId: id,
     });
-
     return response.data;
   } catch (error) {
     console.error('Error authenticating:', error.message);
