@@ -1,10 +1,10 @@
 display_information:
-  name: My_Bot_Relou_Atelier
-  description: I'm cute
+  name: AskioBot
+  description: I'm cute not you
   background_color: "#4f4f52"
 features:
   bot_user:
-    display_name: My_Bot_Relou_Atelier
+    display_name: AskioBot
     always_online: true
   slash_commands:
     - command: /hello
