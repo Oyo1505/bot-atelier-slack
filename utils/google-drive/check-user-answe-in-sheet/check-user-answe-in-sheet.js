@@ -1,5 +1,5 @@
 import { google } from "googleapis"
-import { auth } from '../../lib/google-api.js';
+import { auth } from '../../../lib/google-api.js';
 
 export const checkIfUserIsInSheet = async ({userId, sheetId, blockId}) => {
   if(!userId || !sheetId || !blockId) return false;

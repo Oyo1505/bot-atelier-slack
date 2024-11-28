@@ -1,24 +1,15 @@
 
 import { app } from '../lib/slack-app.js';
-import { appendToGoogleSheets } from '../utils/send-file-to-google-drive/send-file-to-google-drive.js';
-import { checkIfUserIsInSheet } from '../utils/check-user-answe-in-sheet/check-user-answe-in-sheet.js';
-import { questions } from '../utils/random-question/random-question.js';
-import { getSheetFromGoogleDrive } from '../utils/get-sheet-from-google-drive/get-sheet-from-google-drive.js';
-
-const postAnswerOnThread = async ({channelId, messageTs, userId, textAction}) => {
-  await app.client.chat.postMessage({
-    channel: channelId,
-    thread_ts: messageTs,
-    text: `C'est noté <@${userId}>! Tu as choisi **${textAction}** !`,
-  });
-};
+import { appendToGoogleSheets } from '../utils/google-drive/send-file-to-google-drive/send-file-to-google-drive.js';
+import { checkIfUserIsInSheet } from '../utils/google-drive/check-user-answe-in-sheet/check-user-answe-in-sheet.js';
+import { questions } from '../utils/questions/random-question/random-question.js';
+import { postAnswerOnThread } from './post-answer-on-thread.js';
+import { getSheetFromGoogleDrive } from '../utils/google-drive/get-sheet-from-google-drive/get-sheet-from-google-drive.js';
 
 const getUserProgress = async ({ userId, sheetId }) => {
   const sheetData = await getSheetFromGoogleDrive(sheetId);
   const userResponses = sheetData.filter(row => row[0] === userId);
-  console.log(userResponses);
   const lastBlockId = userResponses.length > 0 ? userResponses[userResponses.length - 1][4] : null;
-  console.log(lastBlockId);
   return lastBlockId;
 };
 
@@ -35,14 +26,14 @@ export const actionFromBlockButton = async (idButton, sheetId) => {
 
     if (!isAlreadyInSheet) {
     await ack();
-    const res = await appendToGoogleSheets({ userId, userName, answerText: textAction, answerId: actionId, sheetId, blockId:currentBlockId });
-      if (res) {
+    const isHasBeenAddToTheSheet = await appendToGoogleSheets({ userId, userName, answerText: textAction, answerId: actionId, sheetId, blockId:currentBlockId });
+      if (isHasBeenAddToTheSheet) {
         
         const lastBlockId = await getUserProgress({ userId, sheetId});
        
         const currentQuestionIndex = questions.findIndex(q => q.blocks[0].block_id === lastBlockId);
         const nextQuestion = questions[currentQuestionIndex + 1];
-        console.log(lastBlockId);
+
         if (nextQuestion) {
           await postAnswerOnThread({channelId, messageTs, userId, textAction})
           await app.client.chat.postMessage({
@@ -66,8 +57,6 @@ export const actionFromBlockButton = async (idButton, sheetId) => {
           text: `Tu as déjà répondu à cette question.`,
         });
       }
-   
-
   });
 };
 

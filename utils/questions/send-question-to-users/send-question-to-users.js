@@ -1,13 +1,13 @@
-import { app } from '../../lib/slack-app.js';
 import cron from 'node-cron';
-import { questions } from "../random-question/random-question.js";
-import { actionFromBlockButton } from '../../actions/action-from-block-button.js';
-import { createSheetToGooleDrive } from '../create-sheet-to-google-drive/create-sheet-to-google-drive.js';
-import { deleteAllFiles } from '../delete-all-files/delete-all-files.js';
+import { app } from '../../../lib/slack-app.js';
+import { deleteAllFiles } from '../../google-drive/delete-all-files/delete-all-files.js';
+import { createSheetToGooleDrive } from '../../google-drive/create-sheet-to-google-drive/create-sheet-to-google-drive.js';
+import { actionFromBlockButton } from '../../../actions/action-from-block-button.js';
+import { questions } from '../random-question/random-question.js';
 
 const SECONDES = 0;
-const MINUTES = 44;
-const HOURS = 15;
+const MINUTES = 7;
+const HOURS = 16;
 const DAYS_OF_MONTH = '*';
 const MONTHS = '*';
 const DAYS_OF_WEEK = '*';
@@ -15,14 +15,14 @@ const DAYS_OF_WEEK = '*';
 const SCHEDULE_TIME = `${SECONDES} ${MINUTES} ${HOURS} ${DAYS_OF_MONTH} ${MONTHS} ${DAYS_OF_WEEK}`;
 
 export const scheduleMessageToUsers = async () => {
-//await deleteAllFiles()
+ await deleteAllFiles()
   cron.schedule(SCHEDULE_TIME, () => {
 
     app.client.users.list().then(async res => {
     const sheetId = await createSheetToGooleDrive();
       if(sheetId !== null){
         res.members.forEach((member) => {
-          if (member.real_name === 'Henri-Pierre Rigoulet' || member.real_name === 'Sebastien Bortenlänger' && member.is_bot === false && member.is_email_confirmed === true && member.deleted === false) {
+          if (member.real_name === 'Henri-Pierre Rigoulet' && member.is_bot === false && member.is_email_confirmed === true && member.deleted === false) {
             const firstQuestion = questions[0];
              app.client.chat.postMessage({
               channel: member.id,

@@ -1,10 +1,10 @@
 import { google } from 'googleapis';
-import {auth} from '../../lib/google-api.js';
-import { RANGE_GOOGLE_SHEET } from '../../shared/constants.js';
+import {auth} from '../../../lib/google-api.js';
+import { RANGE_GOOGLE_SHEET } from '../../../shared/constants.js';
 
 
-export async function appendToGoogleSheets({userId,userName, answerText, answerId, sheetId, blockId}) {
-
+export async function appendToGoogleSheets({userId, userName, answerText, answerId, sheetId, blockId}) {
+  if(!userId || !userName || !answerText || !answerId || !sheetId || !blockId) return false;
   const sheets = google.sheets({ version: 'v4', auth });
   const request = {
     spreadsheetId: sheetId,
