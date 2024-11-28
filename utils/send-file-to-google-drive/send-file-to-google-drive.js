@@ -16,8 +16,8 @@ export async function appendToGoogleSheets({userId,userName, answerText, answerI
       ],
     },
   };
+  try {
    await sheets.spreadsheets.values.append(request);
-   // Ajouter des formules pour les statistiques
   const formulas = [
     { range: 'F2', values: [['=COUNTUNIQUE(A2:A)']] }, 
     //{ range: 'F4', values: [['=AVERAGEIF(C:C, 1, C:C)']] }, 
@@ -30,4 +30,9 @@ export async function appendToGoogleSheets({userId,userName, answerText, answerI
       valueInputOption: 'USER_ENTERED',
     },
   });
+  return true;
+  } catch (error) {
+    console.error('Error authenticating:', error.message);
+    throw error;
+  }
 }

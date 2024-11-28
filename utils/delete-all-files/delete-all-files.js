@@ -21,6 +21,7 @@ export const deleteAllFiles = async () => {
 
    
     const sheetsFiles = files.filter(file => file.mimeType === 'application/vnd.google-apps.spreadsheet');
+
     const deleteSheets = async () => {
       for (const file of sheetsFiles) {
         try {
