@@ -5,9 +5,10 @@
     blocks : [
       {
         type: 'section',
+        block_id: 'q_1',
         text: {
           type: 'mrkdwn',
-          text: 'Quelle a été ta plus grande réussite cette semaine ?'
+          text: 'Comment à été ta semaine ?'
         }
       },
       {
@@ -67,6 +68,7 @@
     blocks : [
       {
         type: 'section',
+       block_id: 'q_2',
         text: {
           type: 'mrkdwn',
           text: 'Quelle a été ta plus grande réussite cette semaine ?'
@@ -111,6 +113,7 @@
     blocks : [
       {
         type: 'section',
+        block_id: 'q_3',
         text: {
           type: 'mrkdwn',
           text: 'Quelle difficulté as-tu rencontrée cette semaine ?',
