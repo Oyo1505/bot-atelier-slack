@@ -15,7 +15,7 @@ const DAYS_OF_WEEK = '*';
 const SCHEDULE_TIME = `${SECONDES} ${MINUTES} ${HOURS} ${DAYS_OF_MONTH} ${MONTHS} ${DAYS_OF_WEEK}`;
 
 export const scheduleMessageToUsers = async () => {
- await deleteAllFiles()
+// await deleteAllFiles()
   cron.schedule(SCHEDULE_TIME, () => {
 
     app.client.users.list().then(async res => {
