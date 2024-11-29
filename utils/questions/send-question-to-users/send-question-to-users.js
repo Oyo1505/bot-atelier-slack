@@ -6,8 +6,8 @@ import { actionFromBlockButton } from '../../../actions/action-from-block-button
 import { questions } from '../random-question/random-question.js';
 
 const SECONDES = 0;
-const MINUTES = 32;
-const HOURS = 16;
+const MINUTES = 4;
+const HOURS = 17;
 const DAYS_OF_MONTH = '*';
 const MONTHS = '*';
 const DAYS_OF_WEEK = '*';
