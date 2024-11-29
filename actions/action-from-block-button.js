@@ -35,14 +35,12 @@ export const actionFromBlockButton = async (idButton, sheetId) => {
         const nextQuestion = questions[currentQuestionIndex + 1];
 
         if (nextQuestion) {
-          await postAnswerOnThread({channelId, messageTs, userId, textAction})
           await app.client.chat.postMessage({
             channel: channelId,
             text: `Question suivante : ${nextQuestion.question}`,
             blocks: nextQuestion.blocks,
           });
         } else {
-          await postAnswerOnThread({channelId, messageTs, userId, textAction})
           await app.client.chat.postMessage({
             channel: channelId,
             text: `Merci <@${userId}> d'avoir répondu à toutes les questions ! 🎉`,
@@ -51,11 +49,7 @@ export const actionFromBlockButton = async (idButton, sheetId) => {
       } 
       }else {
         await ack();
-        app.client.chat.postMessage({
-          channel: channelId,
-          thread_ts: messageTs,
-          text: `Tu as déjà répondu à cette question.`,
-        });
+        await postAnswerOnThread({channelId, messageTs, textAction:'Tu as déjà répondu à cette question.'})
       }
   });
 };

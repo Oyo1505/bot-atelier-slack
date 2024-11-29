@@ -1,13 +1,13 @@
 import cron from 'node-cron';
 import { app } from '../../../lib/slack-app.js';
-import { deleteAllFiles } from '../../google-drive/delete-all-files/delete-all-files.js';
+//import { deleteAllFiles } from '../../google-drive/delete-all-files/delete-all-files.js';
 import { createSheetToGooleDrive } from '../../google-drive/create-sheet-to-google-drive/create-sheet-to-google-drive.js';
 import { actionFromBlockButton } from '../../../actions/action-from-block-button.js';
 import { questions } from '../random-question/random-question.js';
 
 const SECONDES = 0;
-const MINUTES = 4;
-const HOURS = 17;
+const MINUTES = 20;
+const HOURS = 10;
 const DAYS_OF_MONTH = '*';
 const MONTHS = '*';
 const DAYS_OF_WEEK = '*';
