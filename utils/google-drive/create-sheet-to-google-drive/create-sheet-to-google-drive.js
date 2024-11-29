@@ -23,7 +23,7 @@ export async function createSheetToGooleDrive() {
       valueInputOption: 'RAW',
       resource: {
         values: [
-          ['UserId', 'UserName', 'AnswerId', 'AnswerText', 'BlockId', 'TotalUsers'],
+          ['UserId', 'UserName', 'AnswerId', 'AnswerText', 'BlockId','MessageTimeStamp', 'TotalUsers' ],
         ],
       },
     };

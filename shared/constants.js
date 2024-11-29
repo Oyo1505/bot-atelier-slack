@@ -1,1 +1,1 @@
-export const RANGE_GOOGLE_SHEET = 'A1:E1';
+export const RANGE_GOOGLE_SHEET = 'A1:F1';

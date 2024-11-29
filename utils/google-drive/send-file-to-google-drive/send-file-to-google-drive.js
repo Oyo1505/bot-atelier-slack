@@ -3,7 +3,7 @@ import {auth} from '../../../lib/google-api.js';
 import { RANGE_GOOGLE_SHEET } from '../../../shared/constants.js';
 
 
-export async function appendToGoogleSheets({userId, userName, answerText, answerId, sheetId, blockId}) {
+export async function appendToGoogleSheets({userId, userName, answerText, answerId, sheetId, blockId, messageTs}) {
   if(!userId || !userName || !answerText || !answerId || !sheetId || !blockId) return false;
   const sheets = google.sheets({ version: 'v4', auth });
   const request = {
@@ -12,14 +12,14 @@ export async function appendToGoogleSheets({userId, userName, answerText, answer
     valueInputOption: 'RAW',
     resource: {
       values: [
-        [userId,userName, answerId, answerText, blockId],
+        [userId, userName, answerId, answerText, blockId, messageTs],
       ],
     },
   };
   try {
    await sheets.spreadsheets.values.append(request);
   const formulas = [
-    { range: 'F2', values: [['=COUNTUNIQUE(A2:A)']] }, 
+    { range: 'G2', values: [['=COUNTUNIQUE(A2:A)']] }, 
     //{ range: 'F4', values: [['=AVERAGEIF(C:C, 1, C:C)']] }, 
   ];
 

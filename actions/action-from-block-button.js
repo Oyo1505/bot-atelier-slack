@@ -5,6 +5,8 @@ import { checkIfUserIsInSheet } from '../utils/google-drive/check-user-answe-in-
 import { questions } from '../utils/questions/random-question/random-question.js';
 import { postAnswerOnThread } from './post-answer-on-thread.js';
 import { getSheetFromGoogleDrive } from '../utils/google-drive/get-sheet-from-google-drive/get-sheet-from-google-drive.js';
+import { checkIfUserCanReply } from '../utils/google-drive/check-if-user-can-reply/check-if-user-can-reply.js';
+
 
 const getUserProgress = async ({ userId, sheetId }) => {
   const sheetData = await getSheetFromGoogleDrive(sheetId);
@@ -13,7 +15,7 @@ const getUserProgress = async ({ userId, sheetId }) => {
   return lastBlockId;
 };
 
-export const actionFromBlockButton = async (idButton, sheetId) => {
+export const actionFromBlockButton = async ({idButton, sheetId}) => {
   app.action(idButton, async ({ ack, body }) => {
     const actionId = body.actions[0].action_id;
     const textAction = body.actions[0].text.text;
@@ -23,10 +25,12 @@ export const actionFromBlockButton = async (idButton, sheetId) => {
     const userName = body.user.name;
     const currentBlockId = body.message.blocks[0].block_id;
     const isAlreadyInSheet = await checkIfUserIsInSheet({ userId, sheetId, blockId:currentBlockId });
+    const canReply = await checkIfUserCanReply({sheetId, messageTs, userId, blockId:currentBlockId});
 
+    if(!canReply) return
     if (!isAlreadyInSheet) {
     await ack();
-    const isHasBeenAddToTheSheet = await appendToGoogleSheets({ userId, userName, answerText: textAction, answerId: actionId, sheetId, blockId:currentBlockId });
+    const isHasBeenAddToTheSheet = await appendToGoogleSheets({ userId, userName, answerText: textAction, answerId: actionId, sheetId, blockId:currentBlockId, messageTs:messageTs });
       if (isHasBeenAddToTheSheet) {
         
         const lastBlockId = await getUserProgress({ userId, sheetId});
