@@ -1,7 +1,7 @@
 import { google } from "googleapis"
 import { auth } from '../../../lib/google-api.js';
 
-export const checkIfUserCanReply = async ({ sheetId, messageTs, userId, blockId }) => {
+export const checkIfUserCanReplyToTheSurvey = async ({ sheetId, messageTs, userId, blockId }) => {
   if (!sheetId) return false; 
   const messageDate = messageTs * 1000;
   const sheets = google.sheets({ version: 'v4', auth });

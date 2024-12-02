@@ -6,13 +6,15 @@ import { actionFromBlockButton } from '../../../actions/action-from-block-button
 import { questions } from '../random-question/random-question.js';
 
 const SECONDES = 0;
-const MINUTES = 33;
-const HOURS = 16;
+const MINUTES = 0;
+const HOURS = 12;
 const DAYS_OF_MONTH = '*';
 const MONTHS = '*';
-const DAYS_OF_WEEK = '*';
+const DAYS_OF_WEEK = 5;
 
 const SCHEDULE_TIME = `${SECONDES} ${MINUTES} ${HOURS} ${DAYS_OF_MONTH} ${MONTHS} ${DAYS_OF_WEEK}`;
+const usersTeamProduit = ['Louise Rocheteau', 'Bruno Griveau', 'François Pagnon', 'Diogo De Araujo', 'Charles Goddet', 'Stan Husson'];
+
 
 export const scheduleMessageToUsers = async () => {
 // await deleteAllFiles()
@@ -22,7 +24,7 @@ export const scheduleMessageToUsers = async () => {
     const sheetId = await createSheetToGooleDrive();
       if(sheetId !== null){
         res.members.forEach((member) => {
-          if (member.real_name === 'Henri-Pierre Rigoulet' && member.is_bot === false && member.is_email_confirmed === true && member.deleted === false) {
+          if (usersTeamProduit.includes(member.real_name) && member.is_bot === false && member.is_email_confirmed === true && member.deleted === false) {
             const firstQuestion = questions[0];
              app.client.chat.postMessage({
               channel: member.id,

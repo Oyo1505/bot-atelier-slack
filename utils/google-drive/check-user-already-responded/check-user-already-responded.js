@@ -1,7 +1,7 @@
 import { google } from "googleapis"
 import { auth } from '../../../lib/google-api.js';
 
-export const checkIfUserIsInSheet = async ({userId, sheetId, blockId}) => {
+export const checkIfUserAlreadyResponded = async ({ userId, sheetId, blockId }) => {
   if(!userId || !sheetId || !blockId) return false;
   
   const sheets = google.sheets({ version: 'v4', auth });
