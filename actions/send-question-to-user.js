@@ -3,8 +3,8 @@ import { createSheetToGooleDrive } from "../utils/google-drive/create-sheet-to-g
 import { questions } from "../utils/questions/random-question/random-question.js";
 import { actionFromBlockButton } from "./action-from-block-button.js";
 
-//const usersTeamProduit = ['Louise Rocheteau', 'Bruno Griveau', 'François Pagnon', 'Diogo De Araujo', 'Charles Goddet', 'Stan Husson'];
-const usersTeamProduit = ['Henri-Pierre Rigoulet'];
+const usersTeamProduit = ['Louise Rocheteau', 'Bruno Griveau', 'François Pagnon', 'Diogo De Araujo', 'Charles Goddet', 'Stan Husson'];
+//const usersTeamProduit = ['Henri-Pierre Rigoulet'];
 export const sendQuestionToUsers = async () => {
   app.client.users.list().then(async res => {
     const sheetId = await createSheetToGooleDrive();
