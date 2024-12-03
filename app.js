@@ -1,8 +1,9 @@
+import { commandSurvey } from './actions/comand-survey.js';
 import { app } from './lib/slack-app.js';
-import { scheduleMessageToUsers } from './utils/questions/send-question-to-users/send-question-to-users.js';
+import { scheduledQuestionsToUsers } from './utils/questions/send-question-to-users/scheduled-question-to-users.js';
 
-
-scheduleMessageToUsers();
+commandSurvey();
+scheduledQuestionsToUsers();
 
 (async () => {
   await app.start();

@@ -36,7 +36,7 @@
             type: 'button',
             text: {
               type: 'plain_text',
-              text: '3 : Plutot ok.'
+              text: '3 : Plutôt bien'
             },
             value: 'reponse_3',
             action_id: 'reponse_3_q_1'
