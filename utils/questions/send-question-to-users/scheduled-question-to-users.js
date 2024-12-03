@@ -13,7 +13,7 @@ const SCHEDULE_TIME = `${SECONDES} ${MINUTES} ${HOURS} ${DAYS_OF_MONTH} ${MONTHS
 
 
 export const scheduledQuestionsToUsers = async () => {
-// await deleteAllFiles()
+ //await deleteAllFiles()
   cron.schedule(SCHEDULE_TIME, () => {
     sendQuestionToUsers();
   });
