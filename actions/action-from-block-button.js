@@ -1,10 +1,10 @@
 
 import { app } from '../lib/slack-app.js';
-import { appendToGoogleSheets } from '../utils/google-drive/send-file-to-google-drive/send-file-to-google-drive.js';
-import { questions } from '../utils/questions/random-question/random-question.js';
+import { appendToGoogleSheets } from '../utils/google-drive/send-file-to-google-drive.js';
+import { questions } from '../utils/questions/random-question.js';
 import { postAnswerOnThread } from './post-answer-on-thread.js';
-import { checkIfUserCanReplyToTheSurvey } from '../utils/google-drive/check-if-user-can-reply-to-survey/check-if-user-can-reply-to-survey.js';
-import { checkIfUserAlreadyResponded } from '../utils/google-drive/check-user-already-responded/check-user-already-responded.js';
+import { checkIfUserCanReplyToTheSurvey } from '../utils/google-drive/check-if-user-can-reply-to-survey.js';
+import { checkIfUserAlreadyResponded } from '../utils/google-drive/check-user-already-responded.js';
 import { deleteQuestionAndAnswer } from './delete-question-and-answer.js';
 import { postBlocksQuestionAsUser } from './post-message-as-user.js';
 

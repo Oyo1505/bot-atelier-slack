@@ -1,5 +1,5 @@
 import { google } from "googleapis"
-import { auth } from '../../../lib/google-api.js';
+import { auth } from '../../lib/google-api.js';
 
 export async function createSheetToGooleDrive() {
   const sheets = google.sheets({ version: 'v4', auth });

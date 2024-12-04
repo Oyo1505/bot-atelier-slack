@@ -1,6 +1,6 @@
 import { commandSurvey } from './actions/comand-survey.js';
 import { app } from './lib/slack-app.js';
-import { scheduledQuestionsToUsers } from './utils/questions/send-question-to-users/scheduled-question-to-users.js';
+import { scheduledQuestionsToUsers } from './utils/questions/scheduled-question-to-users.js';
 
 commandSurvey();
 scheduledQuestionsToUsers();

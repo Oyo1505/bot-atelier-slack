@@ -1,6 +1,7 @@
 import cron from 'node-cron';
+import { sendQuestionToUsers } from '../../actions/send-question-to-user.js';
 //import { deleteAllFiles } from '../../google-drive/delete-all-files/delete-all-files.js';
-import { sendQuestionToUsers } from '../../../actions/send-question-to-user.js';
+
 
 const SECONDES = 0;
 const MINUTES = 0;
