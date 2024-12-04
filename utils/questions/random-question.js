@@ -1,4 +1,3 @@
-
  const questions = [
   {
     question : 'Comment te sens-tu après cette semaine ? (1 à 5)',
@@ -90,7 +89,7 @@
             type: 'button',
             text: {
               type: 'plain_text',
-              text: 'J’ai appris quelque chose de nouveau ! 📚'
+              text: 'J’ai appris quelque chose !'
             },
             value: 'reponse_2',
             action_id: 'reponse_2_q_2'
@@ -153,7 +152,7 @@
             type: 'button',
             text: {
               type: 'plain_text',
-              text: 'Une prise de décision difficile 🤔'
+              text: 'Un choix difficile 🤔'
             },
             value: 'reponse_4',
             action_id: 'reponse_4_q_3'
@@ -162,7 +161,7 @@
             type: 'button',
             text: {
               type: 'plain_text',
-              text: 'Un apprentissage ou adaptation 📚'
+              text: 'Un apprentissage 📚'
             },
             value: 'reponse_5',
             action_id: 'reponse_5_q_3'
