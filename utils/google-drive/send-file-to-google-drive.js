@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
-import {auth} from '../../../lib/google-api.js';
-import { RANGE_GOOGLE_SHEET } from '../../../shared/constants.js';
+import {auth} from '../../lib/google-api.js';
+import { RANGE_GOOGLE_SHEET } from '../../shared/constants.js';
 
 
 export async function appendToGoogleSheets({userId, userName, answerText, answerId, sheetId, blockId, messageTs}) {

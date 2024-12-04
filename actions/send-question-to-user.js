@@ -1,23 +1,23 @@
 import { app } from "../lib/slack-app.js";
-import { createSheetToGooleDrive } from "../utils/google-drive/create-sheet-to-google-drive/create-sheet-to-google-drive.js";
-import { questions } from "../utils/questions/random-question/random-question.js";
+import { createSheetToGooleDrive } from "../utils/google-drive/create-sheet-to-google-drive.js";
+import { questions } from "../utils/questions/random-question.js";
 import { actionFromBlockButton } from "./action-from-block-button.js";
 import { postBlocksQuestionAsUser } from "./post-message-as-user.js";
 
 const openDirectMessage = async (userId) => {
   try {
     const result = await app.client.conversations.open({
-      users: userId, // ID de l'utilisateur cible
+      users: userId,
     });
-    return result.channel.id; // Retourne l'ID du canal DM
+    return result.channel.id; 
   } catch (error) {
     console.error('Erreur lors de l’ouverture de la conversation directe :', error);
     throw error;
   }
 };
 
-const usersTeamProduit = ['Louise Rocheteau', 'Bruno Griveau', 'François Pagnon', 'Diogo De Araujo', 'Charles Goddet', 'Stan Husson'];
-//const usersTeamProduit = ['Henri-Pierre Rigoulet'];
+const usersTeamProduit = process.env.NODE_ENV === 'development' ? ['Henri-Pierre Rigoulet'] : ['Louise Rocheteau', 'Bruno Griveau', 'François Pagnon', 'Diogo De Araujo', 'Charles Goddet', 'Stan Husson'];
+
 export const sendQuestionToUsers = async () => {
   app.client.users.list().then(async res => {
     const sheetId = await createSheetToGooleDrive();

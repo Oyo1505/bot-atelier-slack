@@ -1,5 +1,5 @@
 import { google } from "googleapis"
-import { auth } from '../../../lib/google-api.js';
+import { auth } from '../../lib/google-api.js';
 
 export const checkIfUserCanReplyToTheSurvey = async ({ sheetId, messageTs, userId, blockId }) => {
   if (!sheetId) return false; 
