@@ -1,6 +1,6 @@
 import cron from 'node-cron';
 import { sendQuestionToUsers } from '../../actions/send-question-to-user.js';
-//import { deleteAllFiles } from '../../google-drive/delete-all-files/delete-all-files.js';
+import { deleteAllFiles } from '../google-drive/delete-all-files.js'
 
 
 const SECONDES = 0;
@@ -14,7 +14,7 @@ const SCHEDULE_TIME = `${SECONDES} ${MINUTES} ${HOURS} ${DAYS_OF_MONTH} ${MONTHS
 
 
 export const scheduledQuestionsToUsers = async () => {
- //await deleteAllFiles()
+ await deleteAllFiles()
   cron.schedule(SCHEDULE_TIME, () => {
     sendQuestionToUsers();
   });
