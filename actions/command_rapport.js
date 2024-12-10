@@ -24,7 +24,7 @@ app.command('/rapport', async ({ ack }) => {
       questions.map(({ question, blocks},index)=>{
       app.client.chat.postMessage({
         channel: authorizedUser?.id,
-        text: `Pour la question "${question}" le pourcentage de réponse est :${
+        text: `Pour la question "${question}" le pourcentage par réponse est :${
         blocks[1]?.elements?.map(({text}, i) => {
             return `\n ${text?.text}: ${responses[index][i]}%`
           })}`,
