@@ -1,8 +1,10 @@
 import { app } from '../lib/slack-app.js';
+import { isRapportUser } from '../utils/bool/is-authorized-user.js';
 import { sendQuestionToUsers } from './send-question-to-user.js';
 
 export const commandSurvey = () => {
-app.command('/survey', async ({ ack }) => {
+app.command('/survey', async ({ ack, body }) => {
+  if(!isRapportUser(body.user_id)) return
   try {
    await ack();
    const users = await app.client.users.list()
