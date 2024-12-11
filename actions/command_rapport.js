@@ -1,5 +1,5 @@
 import { app } from '../lib/slack-app.js';
-import { isRapportUser } from '../utils/bool/is-authorized-user.js';
+import { isAuthorizedUser } from '../utils/bool/is-authorized-user.js';
 import { getTheLastSheetFromGoogleDrive } from '../utils/google-drive/get-the-last-sheet-from-google-drive.js';
 import { getValuesFromSheet } from '../utils/google-drive/get-values-from-sheet.js';
 import { questions } from '../utils/questions/random-question.js';
@@ -8,7 +8,7 @@ import { questions } from '../utils/questions/random-question.js';
 export const commandRapport = () => {
 app.command('/rapport', async ({ ack, body }) => {
 
-  if(!isRapportUser(body.user_id)) return
+  if(!isAuthorizedUser(body.user_id)) return
   try {
    const userRapport = process.env.NODE_ENV === 'development' ? 'Henri-Pierre Rigoulet' : 'Sebastien Bortenlänger';
    await ack();
