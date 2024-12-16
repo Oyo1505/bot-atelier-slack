@@ -1,6 +1,6 @@
 import { app } from '../lib/slack-app.js';
 import { isAuthorizedUser } from '../utils/bool/is-authorized-user.js';
-import { sendQuestionToUsers } from './send-question-to-user.js';
+import { sendQuestionsToUsers } from './send-questions-to-users.js';
 
 export const commandSurvey = () => {
 app.command('/survey', async ({ ack, body }) => {
@@ -9,7 +9,7 @@ app.command('/survey', async ({ ack, body }) => {
    await ack();
    const users = await app.client.users.list()
    const authorizedUser = users?.members?.filter(user => user.real_name === 'Henri-Pierre Rigoulet'  && user.is_bot === false && user.is_email_confirmed === true && user.deleted === false)[0];
-   if (authorizedUser !== undefined) await sendQuestionToUsers();
+   if (authorizedUser !== undefined) await sendQuestionsToUsers();
   } catch (error) {
     console.log(error);
   }

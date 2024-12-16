@@ -3,6 +3,7 @@ import { commandRapport } from './actions/command_rapport.js';
 import { app } from './lib/slack-app.js';
 import { scheduledQuestionsToUsers } from './utils/questions/scheduled-question-to-users.js';
 import  express from 'express';
+import { scheduledQuestions } from './utils/questions/scheduled-questions.js';
 
 const appExpress = express();
 
@@ -10,6 +11,7 @@ appExpress.listen(process.env.PORT || 3000 ,()=> {console.log(process.env.PORT |
 commandRapport();
 commandSurvey();
 scheduledQuestionsToUsers();
+scheduledQuestions();
 
 (async () => {
   await app.start();
