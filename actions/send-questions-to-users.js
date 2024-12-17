@@ -1,24 +1,12 @@
 import { app } from "../lib/slack-app.js";
+import { usersTeamProduit } from "../shared/constants.js";
 import { createSheetToGooleDrive } from "../utils/google-drive/create-sheet-to-google-drive.js";
 import { questions } from "../utils/questions/random-question.js";
+import { openDirectMessage } from "../utils/slack/open-direct-message-to-user.js";
 import { actionFromBlockButton } from "./action-from-block-button.js";
 import { postBlocksQuestionAsUser } from "./post-message-as-user.js";
 
-const openDirectMessage = async (userId) => {
-  try {
-    const result = await app.client.conversations.open({
-      users: userId,
-    });
-    return result.channel.id; 
-  } catch (error) {
-    console.error('Erreur lors de l’ouverture de la conversation directe :', error);
-    throw error;
-  }
-};
-
-const usersTeamProduit = process.env.NODE_ENV === 'development' ? ['Henri-Pierre Rigoulet'] : ['Louise Rocheteau', 'Bruno Griveau', 'François Pagnon', 'Diogo De Araujo', 'Charles Goddet', 'Stan Husson'];
-
-export const sendQuestionToUsers = async () => {
+export const sendQuestionsToUsers = async () => {
   app.client.users.list().then(async res => {
     const sheetId = await createSheetToGooleDrive();
       if(sheetId !== null){
@@ -38,8 +26,8 @@ export const sendQuestionToUsers = async () => {
     }).then(async (res) => {
       console.log("Messages envoyés avec succès");
       questions.map(({ blocks })=>{
-        blocks[1].elements?.map((block) => {
-           actionFromBlockButton({idButton: block.action_id, sheetId: res, blockId: blocks[0].block_id});
+        blocks[1].elements?.map(async (block) => {
+          await  actionFromBlockButton({idButton: block.action_id, sheetId: res, blockId: blocks[0].block_id});
         });
       });
     })
