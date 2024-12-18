@@ -15,7 +15,7 @@ export const sendQuestionsToUsers = async () => {
             const firstQuestion = questions[0];
              app.client.chat.postMessage({
               channel: member.id,
-              text: questions[0].question,
+              text: firstQuestion.question,
             });
             const channelId = await openDirectMessage(member.id);
             await postBlocksQuestionAsUser({ channelId, userId: member.id, blocks: firstQuestion.blocks });
