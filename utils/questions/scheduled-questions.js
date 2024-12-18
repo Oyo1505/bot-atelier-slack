@@ -12,7 +12,7 @@ import { postBlocksQuestionAsUser } from '../../actions/post-message-as-user.js'
 
 
 const SECONDES = '0';
-const MINUTES = '5';
+const MINUTES = '0';
 const HOURS = '9-12';
 const DAYS_OF_MONTH = '*';
 const MONTHS = '*';
@@ -25,25 +25,31 @@ export const scheduledQuestions = async () => {
   const sheet = await getTheLastSheetFromGoogleDrive()
   cron.schedule(SCHEDULE_TIME, async () => {
     app.client.users.list().then(async res => {
-        res.members.forEach(async (member) => {
-            if (usersTeamProduit.includes(member.real_name) && member.is_bot === false && member.is_email_confirmed === true && member.deleted === false) {
-              const userIsAlreadyInSheet = await checkIfUserAlreadyInSheet({userId: member.id, sheetId: sheet.id});
-              const userIsOnline = await checkUserPresence(member.id);
-              
-              if(!userIsAlreadyInSheet && userIsOnline){
-                const firstQuestion = questions[0];
-                app.client.chat.postMessage({
-                  channel: member.id,
-                  text: questions[0].question,
-                });
-                const channelId = await openDirectMessage(member.id);
-                await postBlocksQuestionAsUser({ channelId, userId: member.id, blocks: firstQuestion.blocks });
-              }
+      for (const member of res.members) {
+        try {
+          if (usersTeamProduit.includes(member.real_name) && !member.is_bot && member.is_email_confirmed && !member.deleted) {
+
+            const [userIsAlreadyInSheet, userIsOnline] = await Promise.all([
+              checkIfUserAlreadyInSheet({ userId: member.id, sheetId: sheet.id }),
+              checkUserPresence(member.id),
+            ]);
+
+            if (!userIsAlreadyInSheet && userIsOnline) {
+              const firstQuestion = questions[0];
+              const channelId = await openDirectMessage(member.id);
+              await postBlocksQuestionAsUser({
+                channelId,
+                userId: member.id,
+                blocks: firstQuestion.blocks,
+              });
             }
-        });
+          }
+        } catch (error) {
+          console.error(`Erreur pour l'utilisateur ${member.id} :`, error);
+        }
+      }
         return sheet.id
       }).then(async (res) => {
-
         questions.map(({ blocks })=>{
           blocks[1].elements?.map(async (block) => {
             await  actionFromBlockButton({idButton: block.action_id, sheetId: res, blockId: blocks[0].block_id});
