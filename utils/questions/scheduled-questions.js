@@ -12,7 +12,7 @@ import { postBlocksQuestionAsUser } from '../../actions/post-message-as-user.js'
 
 
 const SECONDES = '0';
-const MINUTES = '48';
+const MINUTES = '0';
 const HOURS = '9-12';
 const DAYS_OF_MONTH = '*';
 const MONTHS = '*';
@@ -33,7 +33,7 @@ export const scheduledQuestions = async () => {
               checkIfUserAlreadyInSheet({ userId: member.id, sheetId: sheet.id }),
               checkUserPresence(member.id),
             ]);
-            
+
             if (!userIsAlreadyInSheet && userIsOnline) {
               const firstQuestion = questions[0];
               const channelId = await openDirectMessage(member.id);
