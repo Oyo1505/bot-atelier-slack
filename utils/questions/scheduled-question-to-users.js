@@ -12,7 +12,7 @@ const DAYS_OF_WEEK = 4; //Jeudi
 const SCHEDULE_TIME = `${SECONDES} ${MINUTES} ${HOURS} ${DAYS_OF_MONTH} ${MONTHS} ${DAYS_OF_WEEK}`;
 
 
-export const scheduledQuestionsToUsers = async () => {
+export const scheduledQuestionsToUsersEachThursday = async () => {
  //await deleteAllFiles()
   cron.schedule(SCHEDULE_TIME, async () => {
     await sendQuestionsToUsers();
