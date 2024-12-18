@@ -8,7 +8,7 @@ app.command('/survey', async ({ ack, body }) => {
   try {
    await ack();
    const users = await app.client.users.list()
-   const authorizedUser = users?.members?.filter(user => user.real_name === 'Henri-Pierre Rigoulet'  && user.is_bot === false && user.is_email_confirmed === true && user.deleted === false)[0];
+   const authorizedUser = users?.members?.filter(user => user.real_name === 'Henri-Pierre Rigoulet'  && !user.is_bot && user.is_email_confirmed && !user.deleted)[0];
    if (authorizedUser !== undefined) await sendQuestionsToUsers();
   } catch (error) {
     console.log(error);
