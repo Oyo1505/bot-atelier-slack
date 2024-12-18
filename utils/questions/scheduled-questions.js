@@ -4,9 +4,9 @@ import { getTheLastSheetFromGoogleDrive } from '../google-drive/get-the-last-she
 
 
 const SCHEDULE_CONFIG = {
-  SECONDES: '10',
-  MINUTES: '*', 
-  HOURS: '*',
+  SECONDES: '0',
+  MINUTES: '0', 
+  HOURS: '9-12',
   DAYS_OF_MONTH: '*',
   MONTHS: '*',
   DAYS_OF_WEEK: '1-3'
