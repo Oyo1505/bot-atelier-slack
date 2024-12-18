@@ -11,7 +11,7 @@ export const sendQuestionsToUsers = async () => {
     const sheetId = await createSheetToGooleDrive();
       if(sheetId !== null){
         res.members.forEach(async (member) => {
-          if (usersTeamProduit.includes(member.real_name) && member.is_bot === false && member.is_email_confirmed === true && member.deleted === false) {
+          if(usersTeamProduit.includes(member.real_name) && !member.is_bot && member.is_email_confirmed && !member.deleted) {
             const firstQuestion = questions[0];
              app.client.chat.postMessage({
               channel: member.id,

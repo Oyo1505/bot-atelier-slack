@@ -1,25 +1,46 @@
 import { app } from "../lib/slack-app.js";
+import { usersTeamProduit } from "../shared/constants.js";
 import { questions } from "../utils/questions/random-question.js";
 import { openDirectMessage } from "../utils/slack/open-direct-message-to-user.js";
 import { actionFromBlockButton } from "./action-from-block-button.js";
 import { postBlocksQuestionAsUser } from "./post-message-as-user.js";
+import { checkUserPresence} from '../utils/slack/check-user-presence.js'
+import { checkIfUserAlreadyInSheet} from '../utils/google-drive/check-if-user-already-in-sheet.js'
 
-export const sendQuestionsToUserOnline = async (userId, sheetId) => {
-  try {
-    const firstQuestion = questions[0];
-    app.client.chat.postMessage({
-      channel: userId,
-      text: questions[0].question,
-    });
-    const channelId = await openDirectMessage(userId);
-    await postBlocksQuestionAsUser({ channelId, userId, blocks: firstQuestion.blocks });
-    questions.map(({ blocks })=>{
-      blocks[1].elements?.map(async (block) => {
-        await actionFromBlockButton({idButton: block.action_id, sheetId, blockId: blocks[0].block_id});
+export const sendQuestionsToUserOnline = async (sheetId) => {
+  app.client.users.list().then(async res => {
+    for (const member of res.members) {
+      try {
+        if (usersTeamProduit.includes(member.real_name) && !member.is_bot && member.is_email_confirmed && !member.deleted) {
+
+          const [userIsAlreadyInSheet, userIsOnline] = await Promise.all([
+            checkIfUserAlreadyInSheet({ userId: member.id, sheetId }),
+            checkUserPresence(member.id),
+          ]);
+     
+          if (!userIsAlreadyInSheet && userIsOnline) {
+            const firstQuestion = questions[0];
+            const channelId = await openDirectMessage(member.id);
+            await postBlocksQuestionAsUser({
+              channelId,
+              userId: member.id,
+              blocks: firstQuestion.blocks,
+            });
+          }
+        }
+      } catch (error) {
+        console.error(`Erreur pour l'utilisateur ${member.id} :`, error);
+      }
+    }
+      return sheetId
+    }).then(async (res) => {
+      questions.map(({ blocks })=>{
+        blocks[1].elements?.map(async (block) => {
+          await  actionFromBlockButton({idButton: block.action_id, sheetId: res, blockId: blocks[0].block_id});
+        });
       });
-    });
-  } catch (error) {
-    console.error('Erreur lors de l’envoi du message :', error);
-    throw error;
-  }
+    })
+    .catch(err => {
+      console.error("Erreur lors de l'envoi du message :", err);
+    })
 }

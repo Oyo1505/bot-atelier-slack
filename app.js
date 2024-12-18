@@ -1,10 +1,9 @@
 import { commandSurvey } from './actions/comand_survey.js';
 import { commandRapport } from './actions/command_rapport.js';
 import { app } from './lib/slack-app.js';
-import { scheduledQuestionsToUsersEachThursday } from './utils/questions/scheduled-question-to-users.js';
+import { scheduledQuestionsToUsersEachThursday } from './utils/questions/scheduled-question-to-users-each-thursday.js';
 import  express from 'express';
 import { scheduledQuestions } from './utils/questions/scheduled-questions.js';
-import { isAuthorizedUser } from './utils/bool/is-authorized-user.js';
 
 const appExpress = express();
 
