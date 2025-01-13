@@ -1,7 +1,7 @@
 # bot-atelier-slack
 # AskioBot
 
-Slack Survey Bot est un bot Slack qui permet de créer des sondages et de récupérer leurs résultats directement dans Slack via les commandes `/survey` et `/rapport`. Les sondages sont stockés dans un dossier Google Drive et peuvent également être lancés automatiquement chaque jeudi à 13h.
+AskioBot est un bot Slack qui permet de créer des sondages et de récupérer leurs résultats directement dans Slack via les commandes `/survey` et `/rapport`. Les sondages sont stockés dans un dossier Google Drive et peuvent également être lancés automatiquement chaque jeudi à 13h.
 
 ## Fonctionnalités
 *Ne fonctionne qu'avec les personnes autorisés.*
