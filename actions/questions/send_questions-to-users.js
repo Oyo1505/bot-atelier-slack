@@ -1,10 +1,10 @@
-import { app } from "../lib/slack-app.js";
-import { usersTeamProduit } from "../shared/constants.js";
-import { createSheetToGooleDrive } from "../utils/google-drive/create-sheet-to-google-drive.js";
-import { questions } from "../utils/questions/random-question.js";
-import { openDirectMessage } from "../utils/slack/open-direct-message-to-user.js";
-import { actionFromBlockButton } from "./action-from-block-button.js";
-import { postBlocksQuestionAsUser } from "./post-message-as-user.js";
+import { app } from "../../lib/slack-app.js";
+import { createSheetToGooleDrive } from "../../utils/google-drive/create-sheet-to-google-drive.js";
+import { questions } from "./random-question.js";
+import { openDirectMessage } from "../../utils/slack/open-direct-message-to-user.js";
+import { postBlocksQuestionAsUser } from "../buttons/post_message-as-user.js";
+import { actionFromBlockButton } from "../buttons/action-from-block-button.js";
+import { usersTeamProduit } from "../../shared/constants.js";
 
 export const sendQuestionsToUsers = async () => {
   app.client.users.list().then(async res => {
@@ -27,7 +27,7 @@ export const sendQuestionsToUsers = async () => {
       console.log("Messages envoyés avec succès");
       questions.map(({ blocks })=>{
         blocks[1].elements?.map(async (block) => {
-          await  actionFromBlockButton({idButton: block.action_id, sheetId: res, blockId: blocks[0].block_id});
+          await actionFromBlockButton({idButton: block.action_id, sheetId: res, blockId: blocks[0].block_id});
         });
       });
     })

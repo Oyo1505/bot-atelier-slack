@@ -1,11 +1,11 @@
-import { app } from "../lib/slack-app.js";
-import { usersTeamProduit } from "../shared/constants.js";
-import { questions } from "../utils/questions/random-question.js";
-import { openDirectMessage } from "../utils/slack/open-direct-message-to-user.js";
-import { actionFromBlockButton } from "./action-from-block-button.js";
-import { postBlocksQuestionAsUser } from "./post-message-as-user.js";
-import { checkUserPresence} from '../utils/slack/check-user-presence.js'
-import { checkIfUserAlreadyInSheet} from '../utils/google-drive/check-if-user-already-in-sheet.js'
+import { app } from "../../lib/slack-app.js";
+import { usersTeamProduit } from "../../shared/constants.js";
+import { questions } from "./random-question.js";
+import { openDirectMessage } from "../../utils/slack/open-direct-message-to-user.js";
+import { actionFromBlockButton } from "../buttons/action-from-block-button.js";
+import { checkUserPresence} from '../../utils/slack/check-user-presence.js'
+import { checkIfUserAlreadyInSheet} from '../../utils/google-drive/check-if-user-already-in-sheet.js'
+import { postBlocksQuestionAsUser } from "../buttons/post_message-as-user.js";
 
 export const sendQuestionsToUserOnline = async (sheetId) => {
   app.client.users.list().then(async res => {

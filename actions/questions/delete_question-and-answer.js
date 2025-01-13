@@ -1,4 +1,4 @@
-import { app } from "../lib/slack-app.js";
+import { app } from '../../lib/slack-app.js';
 
 export const deleteQuestionAndAnswer = async ({ text, channelId, messageTs, userId }) => {
   try {

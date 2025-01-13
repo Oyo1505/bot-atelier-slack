@@ -1,6 +1,6 @@
 import cron from 'node-cron';
-import { sendQuestionsToUserOnline } from '../../actions/send-questions-to-user-online.js';
-import { getTheLastSheetFromGoogleDrive } from '../google-drive/get-the-last-sheet-from-google-drive.js';
+import { getTheLastSheetFromGoogleDrive } from '../../utils/google-drive/get-the-last-sheet-from-google-drive.js';
+import { sendQuestionsToUserOnline } from './send_questions-to-user-online.js';
 
 
 const SCHEDULE_CONFIG = {
@@ -24,6 +24,6 @@ export const scheduledQuestions = async () => {
       await sendQuestionsToUserOnline(sheet?.id)
   })
   }catch(err){
-    console.error('Impossible de récupérer la feuille Google Drive')
+    console.error('Error dans scheduledQuestions')
   }
 }

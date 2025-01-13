@@ -1,9 +1,9 @@
-import { app } from '../lib/slack-app.js';
-import { isAuthorizedUser } from '../utils/bool/is-authorized-user.js';
-import { getTheLastSheetFromGoogleDrive } from '../utils/google-drive/get-the-last-sheet-from-google-drive.js';
-import { getTotalUsersCount } from '../utils/google-drive/get-total-users-count.js';
-import { getValuesFromSheet } from '../utils/google-drive/get-values-from-sheet.js';
-import { questions } from '../utils/questions/random-question.js';
+import { app } from '../../lib/slack-app.js';
+import { isAuthorizedUser } from '../../utils/bool/is-authorized-user.js';
+import { getTotalUsersCount } from '../../utils/google-drive/get-total-users-count.js';
+import { getValuesFromSheet } from '../../utils/google-drive/get-values-from-sheet.js';
+import { getTheLastSheetFromGoogleDrive } from '../../utils/google-drive/get-the-last-sheet-from-google-drive.js';
+import { questions } from '../questions/random-question.js';
 
 
 export const commandRapport = () => {
