@@ -1,4 +1,4 @@
-import { app } from '../lib/slack-app.js';
+import { app } from '../../lib/slack-app.js';
 
 export const postBlocksQuestionAsUser = async ({ channelId, userId, blocks }) => {
   try {

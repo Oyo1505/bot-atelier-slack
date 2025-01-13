@@ -1,9 +1,10 @@
-import { commandSurvey } from './actions/comand_survey.js';
-import { commandRapport } from './actions/command_rapport.js';
+
 import { app } from './lib/slack-app.js';
-import { scheduledQuestionsToUsersEachThursday } from './utils/questions/scheduled-question-to-users-each-thursday.js';
+import { scheduledQuestionsToUsersEachThursday } from './actions/questions/scheduled-question-to-users-each-thursday.js';
 import  express from 'express';
-import { scheduledQuestions } from './utils/questions/scheduled-questions.js';
+import { scheduledQuestions } from './actions/questions/scheduled-questions.js';
+import { commandRapport } from './actions/commands/command_rapport.js';
+import { commandSurvey } from './actions/commands/comand_survey.js';
 
 const appExpress = express();
 
@@ -13,7 +14,6 @@ commandRapport();
 commandSurvey();
 scheduledQuestionsToUsersEachThursday();
 scheduledQuestions();
-
 
 (async () => {
   await app.start();

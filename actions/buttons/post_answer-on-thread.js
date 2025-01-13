@@ -1,4 +1,4 @@
-import { app } from '../lib/slack-app.js';
+import { app } from '../../lib/slack-app.js';
 
 export const postAnswerOnThread = async ({channelId, messageTs, textAction}) => {
   try {

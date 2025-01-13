@@ -1,12 +1,12 @@
 
-import { app } from '../lib/slack-app.js';
-import { appendToGoogleSheets } from '../utils/google-drive/send-file-to-google-drive.js';
-import { questions } from '../utils/questions/random-question.js';
-import { postAnswerOnThread } from './post-answer-on-thread.js';
-import { checkIfUserCanReplyToTheSurvey } from '../utils/google-drive/check-if-user-can-reply-to-survey.js';
-import { checkIfUserAlreadyResponded } from '../utils/google-drive/check-user-already-responded.js';
-import { deleteQuestionAndAnswer } from './delete-question-and-answer.js';
-import { postBlocksQuestionAsUser } from './post-message-as-user.js';
+import { app } from '../../lib/slack-app.js';
+import { appendToGoogleSheets } from '../../utils/google-drive/send-file-to-google-drive.js';
+import { questions } from '../questions/random-question.js';
+import { postAnswerOnThread } from './post_answer-on-thread.js';
+import { checkIfUserCanReplyToTheSurvey } from '../../utils/google-drive/check-if-user-can-reply-to-survey.js';
+import { checkIfUserAlreadyResponded } from '../../utils/google-drive/check-user-already-responded.js';
+import { deleteQuestionAndAnswer } from '../questions/delete_question-and-answer.js';
+import { postBlocksQuestionAsUser } from './post_message-as-user.js';
 
 export const actionFromBlockButton = async ({idButton, sheetId, blockId}) => {
   app.action(idButton, async ({ ack, body }) => {
@@ -21,32 +21,31 @@ export const actionFromBlockButton = async ({idButton, sheetId, blockId}) => {
       try{
         
         await ack();
+        await deleteQuestionAndAnswer({ text: textAction, channelId, messageTs, userId });
         const canReply = await checkIfUserCanReplyToTheSurvey({sheetId, messageTs, userId, blockId});
         if(!canReply) return
-    
         const isAlreadyResponded = await checkIfUserAlreadyResponded({ userId, sheetId, blockId });
-        const currentQuestionIndex = questions.findIndex(q => q.blocks[0].block_id === blockId);
-        const nextQuestion = questions[currentQuestionIndex + 1];
-    
         if(!isAlreadyResponded) {
-      
+         
           const isAddedToSheet = await appendToGoogleSheets({ userId, userName, answerText: textAction, answerId: actionId, sheetId, blockId, messageTs:messageTs });
             
           if (isAddedToSheet) {
+            const currentQuestionIndex = questions.findIndex(q => q.blocks[0].block_id === blockId);
+            const nextQuestion = questions[currentQuestionIndex + 1];
               if (nextQuestion) {
-                await deleteQuestionAndAnswer({ text: textAction, channelId, messageTs, userId });
+                
                 await app.client.chat.postMessage({
                   channel: channelId,
                   text: `${nextQuestion.question}`,
                 });
+
                 await postBlocksQuestionAsUser({ channelId, userId, blocks: nextQuestion.blocks });
+                
               } else {
-                await deleteQuestionAndAnswer({ text: textAction, channelId, messageTs, userId }).then(async()=>{
-                  await app.client.chat.postMessage({
-                    channel: channelId,
-                    text: `Merci <@${userId}> d'avoir répondu à toutes les questions ! 🎉`,
-                  });
-                }).catch(error => console.error(error))
+                await app.client.chat.postMessage({
+                  channel: channelId,
+                  text: `Merci <@${userId}> d'avoir répondu à toutes les questions ! 🎉`,
+                });
               }
             } 
           }else {

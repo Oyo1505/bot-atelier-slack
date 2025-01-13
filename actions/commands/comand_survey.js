@@ -1,6 +1,7 @@
-import { app } from '../lib/slack-app.js';
-import { isAuthorizedUser } from '../utils/bool/is-authorized-user.js';
-import { sendQuestionsToUsers } from './send-questions-to-users.js';
+import { app } from '../../lib/slack-app.js';
+import { sendQuestionsToUsers } from '../questions/send_questions-to-users.js';
+import { isAuthorizedUser } from '../../utils/bool/is-authorized-user.js';
+
 
 export const commandSurvey = () => {
 app.command('/survey', async ({ ack, body }) => {
