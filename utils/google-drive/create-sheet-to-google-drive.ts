@@ -1,5 +1,5 @@
 import { google } from "googleapis"
-import { auth } from '../../lib/google-api.js';
+import { auth } from '../../lib/google-api.ts';
 
 export async function createSheetToGooleDrive() {
   const sheets = google.sheets({ version: 'v4', auth });
@@ -17,6 +17,10 @@ export async function createSheetToGooleDrive() {
     });
     
     const spreadsheetId = sheetData.spreadsheetId;
+    if (!spreadsheetId) {
+      throw new Error('Failed to create spreadsheet');
+    }
+
     const request = {
       spreadsheetId: spreadsheetId,
       range: 'A1',
@@ -28,7 +32,7 @@ export async function createSheetToGooleDrive() {
       },
     };
 
-    await sheets.spreadsheets.values.update(request);
+    await sheets.spreadsheets.values.update(request as any);
     await drive.permissions.create({
       
       fileId: spreadsheetId,
@@ -49,7 +53,11 @@ export async function createSheetToGooleDrive() {
 
     return spreadsheetId;
   } catch (error) {
-    console.error('Error creating or sharing the sheet:', error.message);
+    if (error instanceof Error) {
+      console.error('Error creating or sharing the sheet:', error.message);
+    } else {
+      console.error('Error creating or sharing the sheet:', error);
+    }
     throw error;
   }
 }

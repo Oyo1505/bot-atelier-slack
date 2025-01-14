@@ -1,6 +1,6 @@
-import { app } from "../../lib/slack-app.js";
+import { app } from "../../lib/slack-app.ts";
 
-export const checkUserPresence = async (userId) => {
+export const checkUserPresence = async (userId:string) => {
   try {
     const presence = await app.client.users.getPresence({
       user: userId

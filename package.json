@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "lint:fix": "eslint --fix ./*.js",
+    "lint:fix": "eslint --fix ./*.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,16 +16,21 @@
   "dependencies": {
     "@slack/bolt": "^4.1.0",
     "@slack/web-api": "^7.7.0",
+    "@typescript-eslint/parser": "^8.20.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
     "googleapis": "^144.0.0",
     "node-cron": "^3.0.3",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.9",
+    "typescript-eslint": "^8.20.0"
   },
   "packageManager": "pnpm@8.15.6+sha256.01c01eeb990e379b31ef19c03e9d06a14afa5250b82e81303f88721c99ff2e6f",
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@types/express": "^5.0.0",
+    "@types/node-cron": "^3.0.11",
     "eslint": "^9.15.0",
-    "globals": "^15.12.0"
+    "globals": "^15.12.0",
+    "typescript": "^5.7.3"
   }
 }

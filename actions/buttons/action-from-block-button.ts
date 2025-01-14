@@ -1,15 +1,21 @@
+import { app } from '../../lib/slack-app.ts';
+import { SlackActionMiddlewareArgs, BlockButtonAction } from '@slack/bolt';
+import { questions } from '../questions/random-question.ts';
+import { postAnswerOnThread } from './post_answer-on-thread.ts';
+import { checkIfUserCanReplyToTheSurvey } from '../../utils/google-drive/check-if-user-can-reply-to-survey.ts';
+import { checkIfUserAlreadyResponded } from '../../utils/google-drive/check-user-already-responded.ts';
+import { deleteQuestionAndAnswer } from '../questions/delete_question-and-answer.ts';
+import { postBlocksQuestionAsUser } from './post_message-as-user.ts';
+import { appendToGoogleSheets } from '../../utils/google-drive/send-file-to-google-drive.ts';
 
-import { app } from '../../lib/slack-app.js';
-import { appendToGoogleSheets } from '../../utils/google-drive/send-file-to-google-drive.js';
-import { questions } from '../questions/random-question.js';
-import { postAnswerOnThread } from './post_answer-on-thread.js';
-import { checkIfUserCanReplyToTheSurvey } from '../../utils/google-drive/check-if-user-can-reply-to-survey.js';
-import { checkIfUserAlreadyResponded } from '../../utils/google-drive/check-user-already-responded.js';
-import { deleteQuestionAndAnswer } from '../questions/delete_question-and-answer.js';
-import { postBlocksQuestionAsUser } from './post_message-as-user.js';
+type Button = {
+  idButton:string
+  sheetId: string
+  blockId:string
+}
 
-export const actionFromBlockButton = async ({idButton, sheetId, blockId}) => {
-  app.action(idButton, async ({ ack, body }) => {
+export const actionFromBlockButton = async ({idButton, sheetId, blockId}:Button) => {
+  app.action(idButton, async ({ ack, body }: SlackActionMiddlewareArgs<BlockButtonAction>) => {
     
       const actionId = body.actions[0].action_id;
       const textAction = body.actions[0].text.text;

@@ -1,8 +1,8 @@
 import { google } from "googleapis"
-import { auth } from '../../lib/google-api.js';
+import { auth } from '../../lib/google-api.ts';
 
-export const checkIfUserCanReplyToTheSurvey = async ({ sheetId, messageTs, userId, blockId }) => {
-  if (!sheetId) return false; 
+export const checkIfUserCanReplyToTheSurvey = async ({ sheetId, messageTs, userId, blockId }: {  sheetId:string, messageTs:number, userId:string, blockId }) => {
+
   const messageDate = messageTs * 1000;
   const sheets = google.sheets({ version: 'v4', auth });
   const drive = google.drive({ version: 'v3', auth });
@@ -13,7 +13,11 @@ export const checkIfUserCanReplyToTheSurvey = async ({ sheetId, messageTs, userI
       fields: 'createdTime',
     });
    
-    const sheetCreatedTime = new Date(sheetMetadata.createdTime).getTime(); 
+    const createdTime = sheetMetadata?.createdTime;
+    if (!createdTime) {
+      throw new Error('Sheet created time is undefined');
+    }
+    const sheetCreatedTime = new Date(createdTime).getTime(); 
 
     if (messageDate < sheetCreatedTime) {
       return false;
@@ -34,7 +38,11 @@ export const checkIfUserCanReplyToTheSurvey = async ({ sheetId, messageTs, userI
     return lastResponseTimestamp < messageDate; 
 
   } catch (error) {
-    console.error('Erreur lors de la vérification des réponses utilisateur :', error.message);
+    if (error instanceof Error) {
+      console.error('Erreur lors de la vérification des réponses utilisateur :', error.message);
+    } else {
+      console.error('Erreur lors de la vérification des réponses utilisateur :', error);
+    }
     return false; 
   }
 };

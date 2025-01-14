@@ -1,7 +1,8 @@
 import { google } from "googleapis"
-import { auth } from '../../lib/google-api.js';
+import { auth } from '../../lib/google-api.ts';
+import { Post } from "../../model/post.ts";
 
-export const checkIfUserAlreadyResponded = async ({ userId, sheetId, blockId }) => {
+export const checkIfUserAlreadyResponded = async ({ userId, sheetId, blockId }:Post) => {
   if(!userId || !sheetId || !blockId) return false;
   
   const sheets = google.sheets({ version: 'v4', auth });
