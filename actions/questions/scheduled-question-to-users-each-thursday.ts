@@ -4,11 +4,11 @@ import { sendQuestionsToUsers } from './send_questions-to-users.ts';
 
 const SCHEDULE_CONFIG = {
   SECONDES: '0',
-  MINUTES: '40',
-  HOURS: '10',
+  MINUTES: '0',
+  HOURS: '12',
   DAYS_OF_MONTH: '*', 
   MONTHS: '*',
-  DAYS_OF_WEEK: '3' // Jeudi
+  DAYS_OF_WEEK: '4' // Jeudi
 };
 
 const SCHEDULE_TIME = Object.values(SCHEDULE_CONFIG).join(' ');
