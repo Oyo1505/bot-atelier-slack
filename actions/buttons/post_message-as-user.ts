@@ -1,10 +1,10 @@
-import { KnownBlock } from '@slack/web-api';
+import { Block } from '@slack/web-api';
 import { app } from '../../lib/slack-app.ts';
 
 type PostBlocksParams = {
   channelId: string;
   userId: string;
-  blocks: KnownBlock[];
+  blocks: Block[];
 }
 
 export const postBlocksQuestionAsUser = async ({ channelId, userId, blocks }:PostBlocksParams) => {

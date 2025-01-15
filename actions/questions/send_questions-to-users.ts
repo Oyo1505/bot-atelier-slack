@@ -5,29 +5,12 @@ import { openDirectMessage } from "../../utils/slack/open-direct-message-to-user
 import { postBlocksQuestionAsUser } from "../buttons/post_message-as-user.ts";
 import { actionFromBlockButton } from "../buttons/action-from-block-button.ts";
 import { usersTeamProduit } from "../../shared/constants.js";
-
-interface Member {
-  id?: string;
-  real_name: string;
-  is_bot: boolean;
-  is_email_confirmed: boolean;
-  deleted: boolean;
-}
+import { Block } from '@slack/web-api';
+import { Member } from '@slack/web-api/dist/types/response/UsersListResponse';
 
 interface Question {
   question: string;
   blocks: Block[];
-}
-
-interface Block {
-  action_id?: string;
-  block_id: string;
-  elements?: Element[];
-  type: 'section' | 'divider' | 'image' | 'actions' | 'context' | 'input' | 'rich_text';
-}
-
-interface Element {
-  action_id: string;
 }
 
 
@@ -37,10 +20,10 @@ export const sendQuestionsToUsers = async () => {
       if(sheetId !== null){
    
         res?.members?.forEach(async (member: Member) => {
-          if (usersTeamProduit.includes(member.real_name) && !member.is_bot && member.is_email_confirmed && !member.deleted) {
+          if (member.id && member.real_name && usersTeamProduit.includes(member.real_name) && !member.is_bot && member.is_email_confirmed && !member.deleted) {
             const firstQuestion: Question = questions[0];
             await app.client.chat.postMessage({
-              channel: member?.id!,
+              channel: member.id,
               text: firstQuestion.question,
             });
             const channelId = await openDirectMessage(member.id!);

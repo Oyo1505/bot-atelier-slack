@@ -8,10 +8,11 @@ import { checkIfUserAlreadyInSheet} from '../../utils/google-drive/check-if-user
 import { postBlocksQuestionAsUser } from "../buttons/post_message-as-user.ts";
 
 export const sendQuestionsToUserOnline = async (sheetId: string) => {
-  app.client.users.list().then(async res => {
+  app.client.users.list({}).then(async res => {
+    if(res?.members){
     for (const member of res?.members) {
       try {
-        if (usersTeamProduit.includes(member.real_name) && !member.is_bot && member.is_email_confirmed && !member.deleted) {
+        if (member.id &&  member.real_name && usersTeamProduit.includes(member.real_name) && !member.is_bot && member.is_email_confirmed && !member.deleted) {
 
           const [userIsAlreadyInSheet, userIsOnline] = await Promise.all([
             checkIfUserAlreadyInSheet({ userId: member.id, sheetId }),
@@ -31,7 +32,7 @@ export const sendQuestionsToUserOnline = async (sheetId: string) => {
       } catch (error) {
         console.error(`Erreur pour l'utilisateur ${member.id} :`, error);
       }
-    }
+    }}
       return sheetId
     }).then(async (res) => {
       questions.map(({ blocks })=>{

@@ -1,7 +1,6 @@
-import pkg from '@slack/bolt';
 import dotenv from 'dotenv';
 dotenv.config();
-const { App } = pkg;
+import { App } from '@slack/bolt';
 
 // Initializes your app with your bot token and signing secret
 export const app = new App({

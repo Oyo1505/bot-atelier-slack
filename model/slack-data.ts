@@ -1,4 +1,4 @@
-export type Post = {
+export type SlackData = {
   channelId?:string, 
   messageTs?:number, 
   textAction?:string

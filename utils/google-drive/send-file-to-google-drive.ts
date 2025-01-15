@@ -1,10 +1,14 @@
 import { google } from 'googleapis';
 import {auth} from '../../lib/google-api.ts';
 import { RANGE_GOOGLE_SHEET } from '../../shared/constants.js';
-import { Post } from '../../model/post.ts';
+import { SlackData } from '../../model/slack-data.ts';
 
+type Props = SlackData & {
+  answerText: string,
+  answerId: string
+}
 
-export async function appendToGoogleSheets({userId, userName, answerText, answerId, sheetId, blockId, messageTs}:Post) {
+export async function appendToGoogleSheets({userId, userName, answerText, answerId, sheetId, blockId, messageTs}:Props) {
   if(!userId || !userName || !answerText || !answerId || !sheetId || !blockId) return false;
   const sheets = google.sheets({ version: 'v4', auth });
   const request = {
