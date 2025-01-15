@@ -1,5 +1,5 @@
 import { google } from "googleapis";
-import { auth } from '../../lib/google-api.js'
+import { auth } from '../../lib/google-api.ts'
 
 export const deleteAllFiles = async () => {
   try {
@@ -8,7 +8,7 @@ export const deleteAllFiles = async () => {
     const files = [];
 
     do {
-      const response = await drive.files.list({
+      const response: any = await drive.files.list({
         q: "'root' in parents", 
         fields: 'nextPageToken, files(id, name, mimeType, parents)', 
         pageSize: 100, 

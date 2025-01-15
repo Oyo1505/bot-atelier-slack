@@ -1,6 +1,6 @@
 
 import { google } from "googleapis";
-import { auth } from "../../lib/google-api.js"
+import { auth } from "../../lib/google-api.ts"
 
 export const getTheLastSheetFromGoogleDrive = async () =>{
   const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
@@ -10,7 +10,10 @@ export const getTheLastSheetFromGoogleDrive = async () =>{
       q: `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false`,
       fields: 'files(id, name, mimeType, parents)',
     });
-    return sheet.data.files[0]
+    if (sheet.data.files && sheet.data.files.length > 0) {
+      return sheet.data.files[0];
+    }
+    return null;
   
   }catch(err){
     console.log(err)

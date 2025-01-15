@@ -1,9 +1,14 @@
 import { google } from 'googleapis';
-import {auth} from '../../lib/google-api.js';
+import {auth} from '../../lib/google-api.ts';
 import { RANGE_GOOGLE_SHEET } from '../../shared/constants.js';
+import { SlackData } from '../../model/slack-data.ts';
 
+type Props = SlackData & {
+  answerText: string,
+  answerId: string
+}
 
-export async function appendToGoogleSheets({userId, userName, answerText, answerId, sheetId, blockId, messageTs}) {
+export async function appendToGoogleSheets({userId, userName, answerText, answerId, sheetId, blockId, messageTs}:Props) {
   if(!userId || !userName || !answerText || !answerId || !sheetId || !blockId) return false;
   const sheets = google.sheets({ version: 'v4', auth });
   const request = {
@@ -42,14 +47,18 @@ export async function appendToGoogleSheets({userId, userName, answerText, answer
 
   await sheets.spreadsheets.values.batchUpdate({
     spreadsheetId: sheetId,
-    resource: {
+    requestBody: {
       data: formulas,
       valueInputOption: 'USER_ENTERED',
     },
   });
   return true;
   } catch (error) {
-    console.error('Error authenticating:', error.message);
+    if (error instanceof Error) {
+      console.error('Error authenticating:', error.message);
+    } else {
+      console.error('Error authenticating:', error);
+    }
     throw error;
   }
 }

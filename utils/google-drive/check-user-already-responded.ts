@@ -1,7 +1,8 @@
 import { google } from "googleapis"
-import { auth } from '../../lib/google-api.js';
+import { auth } from '../../lib/google-api.ts';
+import { SlackData } from "../../model/slack-data.ts"
 
-export const checkIfUserAlreadyResponded = async ({ userId, sheetId, blockId }) => {
+export const checkIfUserAlreadyResponded = async ({ userId, sheetId, blockId }:SlackData) => {
   if(!userId || !sheetId || !blockId) return false;
   
   const sheets = google.sheets({ version: 'v4', auth });

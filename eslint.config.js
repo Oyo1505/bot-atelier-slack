@@ -1,26 +1,24 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
+/* eslint-env commonjs */
 
-/** @type {import('eslint').Linter.Config[]} */
-
-export default [
-  {
-    files: ["**/*.js"],
-    languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: "module",
-      globals: {
-        ...globals.node,
-      },
-    },
-    rules: {
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-      "no-console": "off", 
-      "strict": ["error", "global"], 
-      "eqeqeq": ["error", "always"], 
-      "no-var": "error", 
-      "prefer-const": "warn", 
-    },
+module.exports = {
+  
+  env: {
+    browser: true,
+    node: true,
+    es2021: true
   },
-  pluginJs.configs.recommended,
-];
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended'
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: 'module' 
+  },
+  plugins: ['@typescript-eslint'],
+  rules: {
+    '@typescript-eslint/no-unused-vars': ['error'],
+    'no-console': 'warn'
+  }
+};

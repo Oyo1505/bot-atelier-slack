@@ -1,7 +1,7 @@
 import { google } from "googleapis"
-import { auth } from '../../lib/google-api.js';
+import { auth } from '../../lib/google-api.ts';
 
-export const getSheetFromGoogleDrive = async (id) =>{
+export const getSheetFromGoogleDrive = async (id:string) =>{
   try {
     const sheets = google.sheets({ version: 'v4', auth });
     const response = await sheets.spreadsheets.values.get({
@@ -10,7 +10,11 @@ export const getSheetFromGoogleDrive = async (id) =>{
     });
     return response.data.values;
   } catch (error) {
-    console.error('Error authenticating:', error.message);
+    if (error instanceof Error) {
+      console.error('Error authenticating:', error.message);
+    } else {
+      console.error('Error authenticating:', error);
+    }
     throw error;
   }
   
