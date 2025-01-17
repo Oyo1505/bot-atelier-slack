@@ -10,6 +10,7 @@ export const getTheLastSheetFromGoogleDrive = async () =>{
       q: `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false`,
       fields: 'files(id, name, mimeType, parents)',
     });
+   
     if (sheet.data.files && sheet.data.files.length > 0) {
       return sheet.data.files[0];
     }

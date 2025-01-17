@@ -7,89 +7,64 @@ import { checkIfUserAlreadyResponded } from '../../utils/google-drive/check-user
 import { deleteQuestionAndAnswer } from '../questions/delete_question-and-answer.ts';
 import { postBlocksQuestionAsUser } from './post_message-as-user.ts';
 import { appendToGoogleSheets } from '../../utils/google-drive/send-file-to-google-drive.ts';
+import { postMessageAsUser } from '../../utils/slack/post-message-as-user.ts';
 
 type Button = {
-  idButton: string;
-  sheetId: string;
-  blockId: string;
-};
+  actionId:string
+  sheetId: string
+  blockId:string
+}
 
-// Fonction pour supprimer la question et la réponse associée.
-const handleDeleteQuestionAndAnswer = async ({ text, channelId, messageTs, userId }: { text:string, channelId:string, messageTs:string, userId:string }) => {
-  try {
-    await deleteQuestionAndAnswer({ text, channelId, messageTs, userId });
-  } catch (error) {
-    console.error("Erreur lors de la suppression de la question et de la réponse:", error);
-  }
-};
-
-// Fonction pour gérer la réponse de l'utilisateur et la soumettre au Google Sheets.
-const handleUserAnswer = async ({ textAction, actionId, userId, sheetId, blockId, messageTs, userName }:{textAction:string, actionId:string, userId:string, sheetId:string, blockId:string, messageTs:number, userName:string }) => {
-  try {
-    const isAddedToSheet = await appendToGoogleSheets({
-      userId, userName, answerText: textAction, answerId: actionId, sheetId, blockId, messageTs
-    });
+export const actionFromBlockButton = async ({actionId, sheetId, blockId}:Button) => {
+  app.action(actionId, async ({ ack, body }: SlackActionMiddlewareArgs<BlockButtonAction>) => {
     
-    return isAddedToSheet;
-  } catch (error) {
-    console.error("Erreur lors de l'ajout de la réponse aux Google Sheets:", error);
-  }
-};
+      const actionId = body.actions[0].action_id;
+      const textAction = body.actions[0].text.text;
+      const userId = body.user.id;
+      const channelId = body.container.channel_id;
+      const messageTs = body.container.message_ts;
+      const userName = body.user.name;
 
-// Fonction pour passer à la question suivante.
-const handleNextQuestion = async ({ channelId, userId, blockId }: {channelId:string, userId:string, blockId:string}) => {
-  const currentQuestionIndex = questions.findIndex(q => q.blocks[0].block_id === blockId);
-  const nextQuestion = questions[currentQuestionIndex + 1];
-  
-  if (nextQuestion) {
-    await app.client.chat.postMessage({
-      channel: channelId,
-      text: `${nextQuestion.question}`,
-    });
-    await postBlocksQuestionAsUser({ channelId, userId, blocks: nextQuestion.blocks });
-  } else {
-    await app.client.chat.postMessage({
-      channel: channelId,
-      text: `Merci <@${userId}> d'avoir répondu à toutes les questions ! 🎉`,
-    });
-  }
-};
+      try{
+        
+        await ack();
 
-// Fonction principale qui gère l'action du bouton.
-export const actionFromBlockButton = async ({ idButton, sheetId, blockId }: Button) => {
-  app.action(idButton, async ({ ack, body }: SlackActionMiddlewareArgs<BlockButtonAction>) => {
-    const actionId = body.actions[0].action_id;
-    const textAction = body.actions[0].text.text;
-    const userId = body.user.id;
-    const channelId = body.container.channel_id;
-    const messageTs = body.container.message_ts;
-    const userName = body.user.name ?? '';
 
-    try {
-      await ack();
+        const canReply = await checkIfUserCanReplyToTheSurvey({sheetId, messageTs, userId, blockId});
+        if(!canReply) return
 
-      // Suppression de la question et de la réponse
-      await handleDeleteQuestionAndAnswer({ text: textAction, channelId, messageTs, userId });
+        const isAlreadyResponded = await checkIfUserAlreadyResponded({ userId, sheetId, blockId });
+        const currentQuestionIndex = questions.findIndex(q => q.blocks[0].block_id === blockId);
+        const nextQuestion = questions[currentQuestionIndex + 1];
+     //   await deleteQuestionAndAnswer({ text: textAction, channelId, messageTs });
+        await postMessageAsUser({ text:textAction,channelId, userId })
+        if(!isAlreadyResponded) {
+         
+          const isAddedToSheet = await appendToGoogleSheets({ userId, userName, answerText: textAction, answerId: actionId, sheetId, blockId, messageTs:messageTs });
+            
+          if (isAddedToSheet) {
 
-      // Vérification si l'utilisateur peut répondre
-      const canReply = await checkIfUserCanReplyToTheSurvey({ sheetId, messageTs, userId, blockId });
-      if (!canReply) return;
+              if (nextQuestion) {
+                
+                await app.client.chat.postMessage({
+                  channel: channelId,
+                  text: `${nextQuestion.question}`,
+                });
 
-      // Vérification si l'utilisateur a déjà répondu
-      const isAlreadyResponded = await checkIfUserAlreadyResponded({ userId, sheetId, blockId });
-      if (isAlreadyResponded) {
-        await postAnswerOnThread({ channelId, messageTs, textAction: 'Tu as déjà répondu à cette question.' });
-        return;
+                await postBlocksQuestionAsUser({ channelId, userId, blocks: nextQuestion.blocks });
+                
+              } else {
+                await app.client.chat.postMessage({
+                  channel: channelId,
+                  text: `Merci <@${userId}> d'avoir répondu à toutes les questions ! 🎉`,
+                });
+              }
+            } 
+          }
+          return
+      }catch (error) {
+        console.error("Erreur lors du traitement de l'action :", error);
       }
-
-      // Traitement de la réponse de l'utilisateur
-      const isAddedToSheet = await handleUserAnswer({ textAction, actionId, userId, sheetId, blockId, messageTs, userName });
-      if (isAddedToSheet) {
-        // Passage à la question suivante si disponible
-        await handleNextQuestion({ channelId, userId, blockId });
-      }
-    } catch (error) {
-      console.error("Erreur lors du traitement de l'action :", error);
-    }
   });
 };
+

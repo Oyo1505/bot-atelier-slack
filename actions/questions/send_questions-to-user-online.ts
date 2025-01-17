@@ -8,7 +8,7 @@ import { checkIfUserAlreadyInSheet} from '../../utils/google-drive/check-if-user
 import { postBlocksQuestionAsUser } from "../buttons/post_message-as-user.ts";
 
 export const sendQuestionsToUserOnline = async (sheetId: string) => {
-  app.client.users.list({}).then(async res => {
+  await app.client.users.list({}).then(async res => {
     if(res?.members){
     for (const member of res?.members) {
       try {

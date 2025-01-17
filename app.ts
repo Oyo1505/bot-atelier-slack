@@ -13,7 +13,7 @@ appExpress.listen(process.env.PORT || 3000 ,()=> {console.log(process.env.PORT |
 commandRapport();
 commandSurvey();
 scheduledQuestionsToUsersEachThursday();
-scheduledQuestions();
+//scheduledQuestions();
 
 (async () => {
   await app.start();
