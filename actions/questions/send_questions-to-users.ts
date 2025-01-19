@@ -6,12 +6,40 @@ import { postBlocksQuestionAsUser } from "../buttons/post_message-as-user.ts";
 import { actionFromBlockButton } from "../buttons/action-from-block-button.ts";
 import { usersTeamProduit } from "../../shared/constants.js";
 import { Block } from '@slack/web-api';
+import { BlockButtonAction } from '@slack/bolt';
 
 interface Question {
   question: string;
   blocks: Block[];
 }
+const sendNextQuestion = async ({
+  client,
+  channelId,
+  currentBlockId,
+}: {
+  client: any;
+  channelId: string;
+  currentBlockId: string;
+}) => {
+  // Trouver l'index de la question actuelle
+  const currentIndex = questions.findIndex((q) =>
+    q.blocks.some((block) => block.block_id === currentBlockId),
+  );
 
+  // Déterminer la question suivante
+  const nextQuestion = questions[currentIndex + 1];
+  if (!nextQuestion) {
+    console.log('Pas de question suivante à envoyer.');
+    return;
+  }
+
+  // Envoyer la question suivante
+  await client.chat.postMessage({
+    channel: channelId,
+    text: nextQuestion.question,
+    blocks: nextQuestion.blocks,
+  });
+};
 export const sendQuestionsToUsers = async (users: any, sheetId: string) => {
   try {
     if (!sheetId) {
@@ -55,31 +83,30 @@ export const sendQuestionsToUsers = async (users: any, sheetId: string) => {
 
     console.log("Messages envoyés avec succès aux utilisateurs valides.");
 
-    // Configuration des actions des boutons
-    for (const { blocks } of questions) {
-      try {
-        if (blocks && blocks.length > 1) {
-          const elements = blocks[1].elements || [];
-          for (const block of elements) {
-            try {
-              if (block.action_id && blocks[0].block_id && sheetId) {
+// Configurer une action pour chaque bouton
+questions.forEach((question) => {
+  question.blocks.forEach((block) => {
+    if (block.type === 'actions' && block.elements) {
+      block.elements.forEach((element: any) => {
+        app.action(element.action_id, async ({ ack, body, client }: any) => {
+          await ack();
+          console.log(`Action ${element.action_id} reçue.,`, client);
+          const channelId = body.container.channel_id;
+          const currentBlockId = body.message.blocks[0].block_id;
 
-                // Configurer l'action pour ce bouton
-                await actionFromBlockButton({
-                  actionId: block.action_id,
-                  sheetId,
-                  blockId: blocks[0].block_id,
-                });
-              }
-            } catch (error) {
-              console.error(`Erreur lors de la configuration du bouton ${block.action_id}:`, error);
-            }
+          try {
+            // Appeler la fonction pour envoyer la question suivante
+            await sendNextQuestion({ client, channelId, currentBlockId });
+            console.log(`Question suivante envoyée après le bouton ${element.action_id}.`);
+          } catch (error) {
+            console.error('Erreur lors de l’envoi de la question suivante:', error);
           }
-        }
-      } catch (error) {
-        console.error("Erreur lors de la configuration des actions des blocs:", error);
-      }
+        });
+      });
     }
+  });
+});
+
   } catch (error) {
     console.error("Erreur générale dans sendQuestionsToUsers:", error);
   }

@@ -28,7 +28,7 @@ export const actionFromBlockButton = async ({actionId, sheetId, blockId}:Button)
       try{
         
         await ack();
-
+/*
 
         const canReply = await checkIfUserCanReplyToTheSurvey({sheetId, messageTs, userId, blockId});
         if(!canReply) return
@@ -61,7 +61,7 @@ export const actionFromBlockButton = async ({actionId, sheetId, blockId}:Button)
               }
             } 
           }
-          return
+          return*/
       }catch (error) {
         console.error("Erreur lors du traitement de l'action :", error);
       }
