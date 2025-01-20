@@ -5,12 +5,12 @@ import { deleteAllFiles } from '../../utils/google-drive/delete-all-files.ts'
 import { createSheetToGooleDrive } from '../../utils/google-drive/create-sheet-to-google-drive.ts';
 
 const SCHEDULE_CONFIG = {
-  SECONDES: '*',
-  MINUTES: '*',
-  HOURS: '1',
+  SECONDES: '0',
+  MINUTES: '0',
+  HOURS: '12',
   DAYS_OF_MONTH: '*', 
   MONTHS: '*',
-  DAYS_OF_WEEK: '*' // Jeudi
+  DAYS_OF_WEEK: '4' // Jeudi
 };
 
 const SCHEDULE_TIME = Object.values(SCHEDULE_CONFIG).join(' ');
@@ -18,7 +18,7 @@ const SCHEDULE_TIME = Object.values(SCHEDULE_CONFIG).join(' ');
 export const scheduledQuestionsToUsersEachThursday = async () => {
   const users = await fetchUsersList();
   
- await deleteAllFiles()
+ //await deleteAllFiles()
   cron.schedule(SCHEDULE_TIME, async () => {
     const sheetId = await createSheetToGooleDrive();
     await sendQuestionsToUsers(users, sheetId);

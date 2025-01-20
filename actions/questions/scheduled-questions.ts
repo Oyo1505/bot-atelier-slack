@@ -1,6 +1,7 @@
 import cron from 'node-cron';
-import { getTheLastSheetFromGoogleDrive } from '../../utils/google-drive/get-the-last-sheet-from-google-drive.ts';
 import { sendQuestionsToUserOnline } from './send_questions-to-user-online.ts';
+import { getTheLastSheetIdFromGoogleDrive } from '../../utils/google-drive/get-last-sheet-id.ts';
+import { fetchUsersList } from '../../utils/slack/fetch-all-users.ts';
 
 
 const SCHEDULE_CONFIG = {
@@ -14,14 +15,19 @@ const SCHEDULE_CONFIG = {
 
 const SCHEDULE_TIME = Object.values(SCHEDULE_CONFIG).join(' ');
 
+
 export const scheduledQuestions = async () => {
+ 
   try {
-    const sheet = await getTheLastSheetFromGoogleDrive();
-    if (!sheet) {
+    const users = await fetchUsersList();
+    const sheetId = await getTheLastSheetIdFromGoogleDrive();
+  
+    if (!sheetId) {
       throw new Error('Impossible de récupérer la feuille Google Drive');
     }
     cron.schedule(SCHEDULE_TIME, async () => {
-      sheet?.id &&  await sendQuestionsToUserOnline(sheet?.id)
+
+      sheetId &&  await sendQuestionsToUserOnline(users, sheetId)
   })
   }catch(err){
     console.error('Error dans scheduledQuestions')

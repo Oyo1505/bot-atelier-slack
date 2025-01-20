@@ -13,6 +13,6 @@ export const postMessageAsUser = async ({text, channelId, userId }: { text : str
         });
       
     } catch (error) {
-      console.log(error, 'ERRUER ICI');
+      console.log(error);
     }
 };
