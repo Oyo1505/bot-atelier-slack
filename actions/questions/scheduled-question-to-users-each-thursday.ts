@@ -1,6 +1,8 @@
 import cron from 'node-cron';
 import { sendQuestionsToUsers } from './send_questions-to-users.ts';
-//import { deleteAllFiles } from '../../utils/google-drive/delete-all-files.ts'
+import { fetchUsersList } from '../../utils/slack/fetch-all-users.ts';
+import { deleteAllFiles } from '../../utils/google-drive/delete-all-files.ts'
+import { createSheetToGooleDrive } from '../../utils/google-drive/create-sheet-to-google-drive.ts';
 
 const SCHEDULE_CONFIG = {
   SECONDES: '0',
@@ -14,8 +16,11 @@ const SCHEDULE_CONFIG = {
 const SCHEDULE_TIME = Object.values(SCHEDULE_CONFIG).join(' ');
 
 export const scheduledQuestionsToUsersEachThursday = async () => {
+  const users = await fetchUsersList();
+  
  //await deleteAllFiles()
   cron.schedule(SCHEDULE_TIME, async () => {
-    await sendQuestionsToUsers();
+    const sheetId = await createSheetToGooleDrive();
+    await sendQuestionsToUsers(users, sheetId);
   });
 };

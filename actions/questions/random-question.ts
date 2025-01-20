@@ -67,7 +67,7 @@
     blocks : [
       {
         type: 'section',
-       block_id: 'q_2',
+        block_id: 'q_2',
         text: {
           type: 'mrkdwn',
           text: 'Quelle a été ta plus grande réussite cette semaine ?'

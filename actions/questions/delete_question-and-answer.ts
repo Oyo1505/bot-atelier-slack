@@ -1,17 +1,11 @@
 import { app } from '../../lib/slack-app.ts';
 
-export const deleteQuestionAndAnswer = async ({ text, channelId, messageTs, userId }: { text : string, channelId: string, messageTs : string, userId: string}) => {
+export const deleteQuestionAndAnswer = async ({channelId, messageTs }: { text : string, channelId: string, messageTs : string}) => {
   try {
-    const userInfo = await app.client.users.info({ user: userId });
-    const userAvatar = userInfo?.user?.profile?.image_512; 
-    await app.client.chat.delete({ channel: channelId, ts: messageTs });
-    await app.client.chat.postMessage({
-      channel: channelId,
-      text: text,
-      username:userInfo?.user?.real_name,
-      icon_url: userAvatar,
-    });
+    const messageDeleted =  await app.client.chat.delete({ channel: channelId, ts: messageTs });
+    return messageDeleted.ok;
   } catch (error) {
-    console.log(error);
+    console.log(error, 'Erreur lors de la suppression de la question et de la réponse, deleteQuestionAndAnswer');
+    return false;
   }
 }
