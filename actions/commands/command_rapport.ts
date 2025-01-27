@@ -20,8 +20,6 @@ interface Question {
   }[];
 }
 
-
-
 export const commandRapport = () => {
 app.command('/rapport', async ({ ack, body }: SlackCommandMiddlewareArgs) => {
 
