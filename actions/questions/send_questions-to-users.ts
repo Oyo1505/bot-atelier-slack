@@ -3,7 +3,7 @@ import { questions } from "./random-question.ts";
 import { openDirectMessage } from "../../utils/slack/open-direct-message-to-user.ts";
 import { usersTeamProduit } from "../../shared/constants.js";
 import { Block } from '@slack/web-api';
-import { Users } from '../../model/user.ts';
+import { UserListResult, Users } from '../../model/user.ts';
 
 
 interface Question {
@@ -11,11 +11,16 @@ interface Question {
   blocks: Block[];
 }
 
-export const sendQuestionsToUsers = async (users: Users, sheetId: string) => {
+export const sendQuestionsToUsers = async (users: UserListResult, sheetId: string) => {
 
   try {
     if (!sheetId) {
       console.error("Sheet ID manquant. Annulation de l'envoi.");
+      return;
+    }
+
+    if (!users.members) {
+      console.error("Aucun membre trouvé. Annulation de l'envoi.");
       return;
     }
 
