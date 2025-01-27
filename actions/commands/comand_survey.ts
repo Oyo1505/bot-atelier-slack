@@ -2,18 +2,10 @@ import { app } from '../../lib/slack-app.ts';
 import { sendQuestionsToUsers } from '../questions/send_questions-to-users.ts';
 import { isAuthorizedUser } from '../../utils/bool/is-authorized-user.ts';
 import { SlackCommandMiddlewareArgs } from '@slack/bolt';
-import { WebAPICallResult } from '@slack/web-api';
 import { fetchUsersList } from '../../utils/slack/fetch-all-users.ts';
 import { createSheetToGooleDrive } from '../../utils/google-drive/create-sheet-to-google-drive.ts';
+import { UserListResult } from '../../model/user.ts';
 
-interface UserListResult extends WebAPICallResult {
-  members?: {
-    real_name: string;
-    is_bot: boolean;
-    is_email_confirmed: boolean;
-    deleted: boolean;
-  }[];
-}
 
 /**
  * A set to keep track of registered actions.
