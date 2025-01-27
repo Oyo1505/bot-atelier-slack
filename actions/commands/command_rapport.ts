@@ -23,7 +23,7 @@ interface Question {
 
 
 export const commandRapport = () => {
-app.command('/rapportdev', async ({ ack, body }: SlackCommandMiddlewareArgs) => {
+app.command('/rapport', async ({ ack, body }: SlackCommandMiddlewareArgs) => {
 
   if(!isAuthorizedUser(body.user_id)) return
   try {
