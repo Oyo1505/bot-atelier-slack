@@ -1,9 +1,10 @@
+import bolt from '@slack/bolt';
 import dotenv from 'dotenv';
 dotenv.config();
-import { App } from '@slack/bolt';
+
 
 // Initializes your app with your bot token and signing secret
-export const app = new App({
+export const app = new bolt.App({
   token: process.env.BOT_USER_OAUTH_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   socketMode: true,
