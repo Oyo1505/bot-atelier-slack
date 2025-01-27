@@ -21,5 +21,5 @@ actionFromBlockButton();
 
 (async () => {
   await app.start();
-  console.log('⚡️ Bolt app is running!', process.env.PORT || 3000 );
+  console.log('⚡️ Bolt app is running!', process.env.PORT || 8080 );
 })();
