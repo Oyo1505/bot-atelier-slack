@@ -9,7 +9,7 @@ import { actionFromBlockButton } from './actions/buttons/action-from-block-butto
 
 const appExpress = express();
 
-appExpress.listen(process.env.PORT || 3000 ,()=> {console.log(process.env.PORT || 3000);})
+appExpress.listen(process.env.PORT_EXPRESS || 3000 ,()=> {console.log(process.env.PORT_EXPRESS || 3000);})
 
 commandRapport();
 commandSurvey();
@@ -21,5 +21,5 @@ actionFromBlockButton();
 
 (async () => {
   await app.start();
-  console.log('⚡️ Bolt app is running!', process.env.PORT || 3000 );
+  console.log('⚡️ Bolt app is running!', process.env.PORT || 8080 );
 })();
