@@ -6,6 +6,7 @@ import { scheduledQuestions } from './actions/questions/scheduled-questions.ts';
 import { commandRapport } from './actions/commands/command_rapport.ts';
 import { commandSurvey } from './actions/commands/comand_survey.ts';
 import { actionFromBlockButton } from './actions/buttons/action-from-block-button.ts';
+import { commandAgent } from './actions/commands/command_agent.ts';
 
 const appExpress = express();
 
@@ -15,7 +16,7 @@ commandRapport();
 commandSurvey();
 scheduledQuestionsToUsersEachThursday();
 scheduledQuestions();
-
+commandAgent();
 actionFromBlockButton();
 
 
