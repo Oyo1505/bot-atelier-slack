@@ -2,36 +2,10 @@ import { SlackCommandMiddlewareArgs } from "@slack/bolt"
 import { app } from "../../lib/slack-app"
 import mistral from "../../lib/mistral.app"
 import { getTheLastSheetFromGoogleDrive } from "../../utils/google-drive/get-the-last-sheet-from-google-drive.ts"
+import { shouldCallFunction } from "../../utils/mistral/should-call-function-get_last_google_sheet.ts"
 
 
-const shouldCallFunction = async (userMessage:string) => {
-  const tools = [
-    {
-      type: "function" as const,
-      function: {
-        name: "get_last_google_sheet",
-        description: "Récupère le dernier fichier Google Sheet du dossier Drive.",
-        parameters: {
-          type: "object",
-          properties: {},
-          required: [],
-        },
-      },
-    },
-  ];
 
-  const response = await mistral.chat.complete({
-    model: "mistral-large-2411",
-    messages: [
-      {role: "system", content: 'repond seulement en francais'},
-      { role: "user", content: userMessage }],
-    tools: tools,
-    toolChoice: "auto",
-  });
-
-  const toolCalls = response?.choices?.[0]?.message?.toolCalls;
-  return toolCalls && toolCalls.length > 0 && toolCalls[0].function.name === "get_last_google_sheet";
-};
 
 export const commandAgent = async() => {
   try {
@@ -40,6 +14,7 @@ export const commandAgent = async() => {
       await ack();
 
       const userMessage = body.text;
+
       if (await shouldCallFunction(userMessage)) { 
         const lastSheet = await getTheLastSheetFromGoogleDrive();
         const date = lastSheet?.createdTime ? new Date(lastSheet?.createdTime).toLocaleDateString("fr") : null;

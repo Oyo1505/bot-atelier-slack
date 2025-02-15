@@ -1,11 +1,9 @@
 import mistral from "../../lib/mistral.app";
-import { getEmailsFromGmail } from "../gmail/get-email-user";
 
-const embeddingMail = async (mail: string): any => {
-  const mailFromUser = getEmailsFromGmail();
+const embeddingMail = async (text: string): Promise<number[] | undefined> => {
  const response = await  mistral.embeddings.create({
     model: "mistral-embed",
-    inputs: '📧 cherche cette phrase',
+    inputs: text,
   })
   return response.data[0].embedding;
 }
