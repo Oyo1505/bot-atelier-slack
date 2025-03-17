@@ -7,6 +7,7 @@ import { commandRapport } from './actions/commands/command_rapport.ts';
 import { commandSurvey } from './actions/commands/comand_survey.ts';
 import { actionFromBlockButton } from './actions/buttons/action-from-block-button.ts';
 import { commandAgent } from './actions/commands/command_agent.ts';
+import { getEmailsFromGmail } from './utils/gmail/get-email-user.ts';
 
 const appExpress = express();
 
@@ -18,7 +19,7 @@ scheduledQuestionsToUsersEachThursday();
 scheduledQuestions();
 commandAgent();
 actionFromBlockButton();
-
+getEmailsFromGmail();
 
 (async () => {
   await app.start();
