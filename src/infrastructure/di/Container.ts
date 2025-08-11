@@ -27,12 +27,12 @@ export class Container {
   }
 
   private initializeDependencies(): void {
-    // Initialiser les adaptateurs (infrastructure)
+
     this.userRepository = new SlackUserRepository();
     this.surveyRepository = new GoogleDriveSurveyRepository();
     this.messagingPort = new SlackMessagingAdapter();
 
-    // Initialiser les handlers (application)
+
     this.commandHandler = new SlackCommandHandler(
       this.userRepository,
       this.surveyRepository,

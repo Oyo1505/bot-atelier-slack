@@ -10,7 +10,7 @@ export class GoogleDriveSurveyRepository implements SurveyRepository {
 
   async createSurvey(name: string): Promise<Survey> {
     try {
-      // Créer la feuille Google Sheets
+   
       const { data: sheetData } = await this.sheets.spreadsheets.create({
         requestBody: {
           properties: { title: name }
@@ -22,7 +22,7 @@ export class GoogleDriveSurveyRepository implements SurveyRepository {
         throw new Error('Failed to create spreadsheet');
       }
 
-      // Initialiser les en-têtes
+      
       await this.sheets.spreadsheets.values.update({
         spreadsheetId,
         range: 'A1',
@@ -32,13 +32,12 @@ export class GoogleDriveSurveyRepository implements SurveyRepository {
         }
       });
 
-      // Configurer les permissions
+   
       await this.drive.permissions.create({
         fileId: spreadsheetId,
         requestBody: { role: 'writer', type: 'anyone' }
       });
 
-      // Déplacer dans le dossier
       const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
       if (folderId) {
         await this.drive.files.update({
