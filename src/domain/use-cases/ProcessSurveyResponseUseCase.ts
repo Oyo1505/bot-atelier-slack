@@ -19,13 +19,11 @@ export class ProcessSurveyResponseUseCase {
   }): Promise<void> {
     const { userId, userName, questionId, answerId, answerText, channelId, messageTs } = params;
 
-    // Récupérer le dernier sondage
     const survey = await this.surveyRepository.getLatestSurvey();
     if (!survey) {
       throw new Error('Aucun sondage actif trouvé');
     }
 
-    // Vérifier si l'utilisateur peut répondre
     const canReply = await this.surveyRepository.checkUserCanReplyToSurvey(
       userId, 
       survey.id, 
@@ -35,23 +33,21 @@ export class ProcessSurveyResponseUseCase {
       return;
     }
 
-    // Vérifier si l'utilisateur a déjà répondu à cette question
+
     const alreadyResponded = await this.surveyRepository.checkUserAlreadyResponded(
       userId, 
       survey.id, 
       questionId
     );
 
-    // Supprimer le message de la question
     await this.messagingPort.deleteMessage(channelId, messageTs);
 
-    // Poster la réponse de l'utilisateur
+
     await this.messagingPort.postMessageAsUser(userId, {
       channelId,
       text: answerText
     });
 
-    // Sauvegarder la réponse si pas déjà répondu
     if (!alreadyResponded) {
       const response: SurveyResponse = {
         userId,
@@ -64,7 +60,7 @@ export class ProcessSurveyResponseUseCase {
 
       await this.surveyRepository.saveResponse(response);
 
-      // Envoyer la question suivante
+
       await this.sendNextQuestion(channelId, questionId, userId);
     }
   }
